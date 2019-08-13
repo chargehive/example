@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="demo.css">
+  <script src="http://paymentauth.com/merchant/v1/client/js/chargehive.min.js"></script>
+  <script>
+    /* Initializer */
+    ChargeHive.initialize('PLACEMENT_TOKEN_HERE', 'PROJECT_HERE');
+  </script>
+  <script>
+    let CURRENCY = 'USD';
+    const CART = [];
+
+    /* Event handlers */
+    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, (event) => console.info("ON_TOKEN", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) => {
+      document.querySelector('.container').innerText = 'Thanks for your purchase';
+      console.info("ON_SUCCESS", event);
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) => {
+      setNormal();
+      alert('sorry, card declined. ' + event.detail.Message);
+      console.info("ON_DECLINE", event)
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, (event) => console.info("ON_PENDING", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, (event) => console.info("ON_VERIFY", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_READY, (event) => console.debug("ON_READY", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) => {
+      setNormal();
+      console.error('Error:', event.detail);
+      if(event.detail.type && event.detail.type === 'card')
+      {
+        document.querySelector('.ch-field-placeholder').style.border = '1px solid red';
+      }
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, (event) => console.debug("ON_ALL_VALID", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, (event) => console.debug("ON_FIELD_CHANGE:", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, (event) => console.debug("ON_FOCUS", event));
+
+    ChargeHive.setStyle(
+      {
+        all:     {
+          default:  {color: 'black'},
+          complete: {color: 'green'},
+          empty:    {color: 'black'},
+          invalid:  {color: 'red'}
+        },
+        cardNum: {
+          invalid: {color: 'orange'}
+        },
+        cardExp: {
+          invalid: {color: 'pink'}
+        },
+        cardCvv: {
+          invalid: {color: 'purple'}
+        }
+      }
+    );
+    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
+    ChargeHive.setBillingAddress({
+                                   address1: 'address1',
+                                   city:     'city',
+                                   state:    'state',
+                                   country:  'GB',
+                                   zip:      'zip',
+                                 });
+
+    ChargeHive.prepareTransaction(
+      'my_order_id_' + Math.floor(Math.random() * 100000),
+      {
+        references: {'fortifi_id': 'customer_fid'}
+      }
+    );
+
+    function addToCart(name, price)
+    {
+      CART.push({name: name, price: price});
+
+      let cartEle = document.getElementById('cart');
+      cartEle.innerHTML = '';
+
+      for(let i in CART)
+      {
+        if(CART.hasOwnProperty(i))
+        {
+          let div = document.createElement('div');
+          div.classList.add('col-75');
+          div.innerHTML = CART[i].name + ' ¤' + CART[i].price;
+          cartEle.appendChild(div);
+        }
+      }
+      updateTransaction();
+    }
+
+    function updateTransaction()
+    {
+      let total = 0;
+      for(let i in CART)
+      {
+        if(CART.hasOwnProperty(i))
+        {
+          total += CART[i].price * 100;
+        }
+      }
+      document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
+      ChargeHive.updateTransaction({amount: total, currency: CURRENCY});
+    }
+
+    function doIt()
+    {
+      ChargeHive.authorizeTransaction();
+      setProcessing();
+    }
+
+    function setProcessing()
+    {
+      document.querySelector('.ch-field-placeholder').style.border = '';
+      document.querySelector('#doit').setAttribute('disabled', 'disabled');
+      document.querySelector('#doit').innerText = 'Processing...';
+    }
+
+    function setNormal()
+    {
+      document.querySelector('#doit').removeAttribute('disabled');
+      document.querySelector('#doit').innerText = 'Pay Now';
+    }
+
+    function changeColour()
+    {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++)
+      {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+
+      ChargeHive.setStyle(
+        {
+          cardNum: {
+            default: {
+              color:    color,
+              ':hover': {color: 'orange'}
+            },
+          },
+        }
+      );
+    }
+
+    document.addEventListener('change', function (e) {
+      if(e.target.id === 'currencySelector')
+      {
+        CURRENCY = e.target.value;
+        updateTransaction();
+      }
+    });
+  </script>
+  <title>Checkout</title>
+</head>
+<body>
+<p>Use this checkout page to test functionality of the checkout process using 3ds 2.0</p>
+<div class="row">
+  <div class="col-75">
+    <div class="container">
+      <div class="row">
+        <div class="col-50">
+          <h3>Cart</h3>
+          <label>
+            Currency:
+            <select id="currencySelector">
+              <option>USD</option>
+              <option>EUR</option>
+              <option>GBP</option>
+            </select>
+          </label>
+          <div class="row" id="cart">
+            <div class="col-75">
+              Nothing Added
+            </div>
+          </div>
+          <h3>Payment</h3>
+          <div class="row">
+            <div class="col-75">
+              <div id="total"></div>
+              <label class="ch-field-label">Credit card number</label>
+              <div class="ch-field-placeholder">
+                <span data-chargehive="cardName"></span>
+                <div class="ch-field-group ch-nowrap">
+                  <span data-chargehive="cardBrand"></span>
+                  <span data-chargehive="cardNum"></span>
+                </div>
+                <span data-chargehive="cardExp"></span>
+                <span data-chargehive="cardCvv"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span data-chargehive="verify" size="full"></span>
+      <button id="doit" onclick="doIt()">Pay Now</button>
+      <button onclick="changeColour()">Change Colour</button>
+    </div>
+  </div>
+  <div class="col-25">
+    <div class="container">
+      <h4>Products <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h4>
+      <p><a href="#" onclick="addToCart('Blue Widget',9.99)">Blue Widget</a> <span class="price">¤9.99</span></p>
+      <p><a href="#" onclick="addToCart('Red Widget',12.99)">Red Widget</a> <span class="price">¤12.99</span></p>
+      <p><a href="#" onclick="addToCart('Blue Thingy',7.50)">Blue Thingy</a> <span class="price">¤7.50</span></p>
+      <p><a href="#" onclick="addToCart('Red Thingy',5.70)">Red Thingy</a> <span class="price">¤5.70</span></p>
+    </div>
+  </div>
+</div>
+
+<div id="card-templates"></div>
+
+</body>
+</html>
