@@ -9,6 +9,11 @@ function replaceEnv($var, $template)
 $template = replaceEnv('PLACEMENT_TOKEN', $template);
 $template = replaceEnv('PROJECT_ID', $template);
 
+if(!empty(getenv('PAUTH_CDN')))
+{
+  $template = str_replace('https://cdn.paymentauth.com', getenv('PAUTH_CDN'), $template);
+}
+
 $cards = '<div id="card-templates">CARDS</div>';
 
 const VI = 'Visa';
