@@ -3,10 +3,10 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="demo.css">
-  <script src="https://paymentauth.com/merchant/v1/client/js/chargehive.min.js"></script>
+  <script src="https://cdn.paymentauth.com/merchant/v1/js/chargehive.min.js"></script>
   <script>
-    /* Initializer */
-    ChargeHive.initialize('PLACEMENT_TOKEN_HERE', 'PROJECT_HERE');
+    /* Initialize ChargeHive */
+    ChargeHive.initialize('PLACEMENT_TOKEN_HERE', 'PROJECT_ID_HERE');
   </script>
   <script>
     let CURRENCY = 'USD';
@@ -73,8 +73,7 @@
       }
     );
 
-    function addToCart(name, price)
-    {
+    function addToCart(name, price) {
       CART.push({name: name, price: price});
 
       let cartEle = document.getElementById('cart');
@@ -93,8 +92,7 @@
       updateTransaction();
     }
 
-    function updateTransaction()
-    {
+    function updateTransaction() {
       let total = 0;
       for(let i in CART)
       {
@@ -107,27 +105,23 @@
       ChargeHive.updateTransaction({amount: total, currency: CURRENCY});
     }
 
-    function doIt()
-    {
+    function doIt() {
       ChargeHive.authorizeTransaction();
       setProcessing();
     }
 
-    function setProcessing()
-    {
+    function setProcessing() {
       document.querySelector('.ch-field-placeholder').style.border = '';
       document.querySelector('#doit').setAttribute('disabled', 'disabled');
       document.querySelector('#doit').innerText = 'Processing...';
     }
 
-    function setNormal()
-    {
+    function setNormal() {
       document.querySelector('#doit').removeAttribute('disabled');
       document.querySelector('#doit').innerText = 'Pay Now';
     }
 
-    function changeColour()
-    {
+    function changeColour() {
       let letters = '0123456789ABCDEF';
       let color = '#';
       for(let i = 0; i < 6; i++)
