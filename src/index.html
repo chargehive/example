@@ -5,20 +5,40 @@
   <link rel="stylesheet" href="demo.css">
   <script src="https://cdn.paymentauth.com/merchant/v1/js/chargehive.min.js"></script>
   <script>
-    /* Initialize ChargeHive */
-    ChargeHive.initialize('PLACEMENT_TOKEN_HERE', 'PROJECT_ID_HERE');
+    /* Initializer */
+    ChargeHive.initialize(
+      'PLACEMENT_TOKEN_HERE', // your placement token
+      'PROJECT_HERE' // your project id
+    );
+    ChargeHive.prepareCharge(
+      'YOUR_REFERENCE' // your merchant reference
+    );
   </script>
   <script>
+    /* customer info */
+    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
+    ChargeHive.setBillingAddress(
+      {
+        address1: 'address1',
+        city: 'city',
+        state: 'state',
+        country: 'GB',
+        zip: 'zip',
+      }
+    );
+
     let CURRENCY = 'USD';
     const CART = [];
 
     /* Event handlers */
     ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, (event) => console.info("ON_TOKEN", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) =>
+    {
       document.querySelector('.container').innerText = 'Thanks for your purchase';
       console.info("ON_SUCCESS", event);
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) =>
+    {
       setNormal();
       alert('sorry, card declined. ' + event.detail.Message);
       console.info("ON_DECLINE", event)
@@ -26,7 +46,8 @@
     ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, (event) => console.info("ON_PENDING", event));
     ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, (event) => console.info("ON_VERIFY", event));
     ChargeHive.addEventListener(ChargeHive.events.ON_READY, (event) => console.debug("ON_READY", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) =>
+    {
       setNormal();
       console.error('Error:', event.detail);
       if(event.detail.type && event.detail.type === 'card')
@@ -40,11 +61,11 @@
 
     ChargeHive.setStyle(
       {
-        all:     {
-          default:  {color: 'black'},
+        all: {
+          default: {color: 'black'},
           complete: {color: 'green'},
-          empty:    {color: 'black'},
-          invalid:  {color: 'red'}
+          empty: {color: 'black'},
+          invalid: {color: 'red'}
         },
         cardNum: {
           invalid: {color: 'orange'}
@@ -55,21 +76,6 @@
         cardCvv: {
           invalid: {color: 'purple'}
         }
-      }
-    );
-    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
-    ChargeHive.setBillingAddress({
-                                   address1: 'address1',
-                                   city:     'city',
-                                   state:    'state',
-                                   country:  'GB',
-                                   zip:      'zip',
-                                 });
-
-    ChargeHive.prepareTransaction(
-      'my_order_id_' + Math.floor(Math.random() * 100000),
-      {
-        references: {'fortifi_id': 'customer_fid'}
       }
     );
 
@@ -133,7 +139,7 @@
         {
           cardNum: {
             default: {
-              color:    color,
+              color: color,
               ':hover': {color: 'orange'}
             },
           },
@@ -141,7 +147,8 @@
       );
     }
 
-    document.addEventListener('change', function (e) {
+    document.addEventListener('change', function (e)
+    {
       if(e.target.id === 'currencySelector')
       {
         CURRENCY = e.target.value;
