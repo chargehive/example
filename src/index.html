@@ -62,6 +62,7 @@
     ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, (event) => console.debug("ON_ALL_VALID", event));
     ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, (event) => console.debug("ON_FIELD_CHANGE:", event));
     ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, (event) => console.debug("ON_FOCUS", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_BLUR, (event) => console.debug("ON_BLUR", event));
 
     ChargeHive.setStyle(
       {
