@@ -103,17 +103,6 @@ span.price {
   }
 }
 
-[data-chargehive].focused {
-  flex-basis: 100% !important;
-}
-
-[data-chargehive] {
-  flex-basis: 0;
-  flex-shrink: 1;
-  flex-grow: 1;
-  transition: flex-basis 200ms ease-in-out;
-}
-
 .ch-field-placeholder {
   display: flex;
   flex-wrap: nowrap;

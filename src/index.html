@@ -3,18 +3,22 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="demo.css">
+
+  <!-- START CHARGEHIVE SCRIPT -->
+  <link rel="stylesheet" href="https://cdn.paymentauth.com/merchant/latest/v1/css/default.css">
   <script src="https://cdn.paymentauth.com/merchant/latest/v1/js/chargehive.min.js"></script>
   <script>
-    /* Initializer */
     ChargeHive.initialize(
       'PLACEMENT_TOKEN_HERE', // your placement token
       'PROJECT_ID_HERE' // your project id
     );
+  </script>
+  <!-- END CHARGEHIVE SCRIPT -->
+
+  <script>
     ChargeHive.prepareCharge(
       'YOUR_REFERENCE' // your merchant reference
     );
-  </script>
-  <script>
     /* customer info */
     ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
     ChargeHive.setBillingAddress(
@@ -191,13 +195,13 @@
               <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
               <div class="ch-field-placeholder">
-                <span data-chargehive="cardName"></span>
+                <span data-chargehive="cardName">Name on Card</span>
                 <div class="ch-field-group ch-nowrap">
                   <span data-chargehive="cardBrand"></span>
-                  <span data-chargehive="cardNum"></span>
+                  <span data-chargehive="cardNum">Card number</span>
                 </div>
-                <span data-chargehive="cardExp"></span>
-                <span data-chargehive="cardCvv"></span>
+                <span data-chargehive="cardExp">MM / YY</span>
+                <span data-chargehive="cardCvv">CVC</span>
               </div>
             </div>
           </div>
