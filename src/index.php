@@ -14,6 +14,8 @@ if(!empty(getenv('PAUTH_CDN')))
   $template = str_replace('https://cdn.paymentauth.com', getenv('PAUTH_CDN'), $template);
 }
 
+$template = str_replace('YOUR_REFERENCE', 'MREF' . md5(time()), $template);
+
 $cards = '<div id="card-templates">CARDS</div>';
 
 const VI = 'Visa';
