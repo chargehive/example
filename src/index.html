@@ -16,44 +16,60 @@
   <!-- END CHARGEHIVE SCRIPT -->
 
   <script>
-    ChargeHive.prepareCharge(
-      'YOUR_REFERENCE' // your merchant reference
-    );
-    /* customer info */
-    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
-    ChargeHive.setBillingAddress(
-      {
-        address1: 'address1',
-        city: 'city',
-        state: 'state',
-        country: 'GB',
-        zip: 'zip',
-      }
-    );
+
 
     let CURRENCY = 'USD';
     const CART = [];
 
     /* Event handlers */
     ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, (event) => console.info("ON_TOKEN", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) =>
-    {
+    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) => {
       document.querySelector('.container').innerText = 'Thanks for your purchase';
       console.info("ON_SUCCESS", event);
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) =>
-    {
+    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) => {
       setNormal();
       alert('sorry, card declined. ' + event.detail.Message);
       console.info("ON_DECLINE", event)
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, (event) => console.info("ON_PENDING", event));
     ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, (event) => console.info("ON_VERIFY", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_READY, (event) => console.debug("ON_READY", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) =>
-    {
+    ChargeHive.addEventListener(ChargeHive.events.ON_READY, (event) => {
+      console.debug("ON_READY", event);
+
+      // your merchant reference
+      ChargeHive.prepareCharge('YOUR_REFERENCE');
+
+      /* customer info */
+      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
+      ChargeHive.setBillingAddress(
+        {
+          address1: 'address1',
+          city:     'city',
+          state:    'state',
+          country:  'GB',
+          zip:      'zip',
+        }
+      );
+
+      //Simplify Setup
+      ChargeHive.setNameOnCard("John Smith");
+      ChargeHive.setCardExpiry(12, 21);
+      addToCart("Initial Product", 32.91);
+
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) => {
       setNormal();
-      console.error('Error:', event.detail);
+
+      if(!event.detail)
+      {
+        console.error('Error Without Detail:', event);
+
+      }
+      else
+      {
+        console.error('Error:', event.detail);
+      }
       if(event.detail.type && event.detail.type === 'card')
       {
         document.querySelector('.ch-field-placeholder').style.border = '1px solid red';
@@ -66,11 +82,11 @@
 
     ChargeHive.setStyle(
       {
-        all: {
-          default: {color: 'black'},
+        all:     {
+          default:  {color: 'black'},
           complete: {color: 'green'},
-          empty: {color: 'black'},
-          invalid: {color: 'red'}
+          empty:    {color: 'black'},
+          invalid:  {color: 'red'}
         },
         cardNum: {
           invalid: {color: 'orange'}
@@ -84,8 +100,7 @@
       }
     );
 
-    function addToCart(name, price)
-    {
+    function addToCart(name, price) {
       CART.push({name: name, price: price});
 
       let cartEle = document.getElementById('cart');
@@ -104,41 +119,36 @@
       updateTransaction();
     }
 
-    function updateTransaction()
-    {
+    function updateTransaction() {
       let total = 0;
       for(let i in CART)
       {
         if(CART.hasOwnProperty(i))
         {
-          total += CART[i].price * 100;
+          total += Math.floor(CART[i].price * 100);
         }
       }
       document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
       ChargeHive.updateCharge({amount: total, currency: CURRENCY});
     }
 
-    function doIt()
-    {
+    function doIt() {
       ChargeHive.authorizeCharge();
       setProcessing();
     }
 
-    function setProcessing()
-    {
+    function setProcessing() {
       document.querySelector('.ch-field-placeholder').style.border = '';
       document.querySelector('#doit').setAttribute('disabled', 'disabled');
       document.querySelector('#doit').innerText = 'Processing...';
     }
 
-    function setNormal()
-    {
+    function setNormal() {
       document.querySelector('#doit').removeAttribute('disabled');
       document.querySelector('#doit').innerText = 'Pay Now';
     }
 
-    function changeColour()
-    {
+    function changeColour() {
       let letters = '0123456789ABCDEF';
       let color = '#';
       for(let i = 0; i < 6; i++)
@@ -150,7 +160,7 @@
         {
           cardNum: {
             default: {
-              color: color,
+              color:    color,
               ':hover': {color: 'orange'}
             },
           },
@@ -158,8 +168,7 @@
       );
     }
 
-    document.addEventListener('change', function (e)
-    {
+    document.addEventListener('change', function (e) {
       if(e.target.id === 'currencySelector')
       {
         CURRENCY = e.target.value;
@@ -223,7 +232,6 @@
     </div>
   </div>
 </div>
-
 <div id="card-templates"></div>
 
 </body>
