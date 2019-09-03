@@ -22,19 +22,30 @@
     const CART = [];
 
     /* Event handlers */
-    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, (event) => console.info("ON_TOKEN", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function(event) {console.info("ON_TOKEN", event)});
+    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event) {
       document.querySelector('.container').innerText = 'Thanks for your purchase';
       console.info("ON_SUCCESS", event);
+      console.log(event.detail.charge_id);
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event) {
       setNormal();
-      alert('sorry, card declined. ' + event.detail.Message);
+      alert('sorry, card declined. ' + event.detail.message);
       console.info("ON_DECLINE", event)
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, (event) => console.info("ON_PENDING", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, (event) => console.info("ON_VERIFY", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_READY, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event) {
+      return console.info(
+        "ON_PENDING",
+        event
+      );
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, function (event) {
+      return console.info(
+        "ON_VERIFY",
+        event
+      );
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_READY, function (event) {
       console.debug("ON_READY", event);
 
       // your merchant reference
@@ -58,7 +69,7 @@
       addToCart("Initial Product", 32.91);
 
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, (event) => {
+    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, function (event) {
       setNormal();
 
       if(!event.detail)
@@ -75,10 +86,25 @@
         document.querySelector('.ch-field-placeholder').style.border = '1px solid red';
       }
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, (event) => console.debug("ON_ALL_VALID", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, (event) => console.debug("ON_FIELD_CHANGE:", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, (event) => console.debug("ON_FOCUS", event));
-    ChargeHive.addEventListener(ChargeHive.events.ON_BLUR, (event) => console.debug("ON_BLUR", event));
+    ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, function (event) {
+      return console.debug(
+        "ON_ALL_VALID",
+        event
+      );
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, function (event) {
+      return console.debug(
+        "ON_FIELD_CHANGE:",
+        event
+      );
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, function (event) {
+      return console.debug(
+        "ON_FOCUS",
+        event
+      );
+    });
+    ChargeHive.addEventListener(ChargeHive.events.ON_BLUR, function (event) { return console.debug("ON_BLUR", event); });
 
     ChargeHive.setStyle(
       {
@@ -211,7 +237,7 @@
                   <span data-chargehive="cardNum">Card number</span>
                 </div>
                 <span data-chargehive="cardExp">MM / YY</span>
-                <span data-chargehive="cardCvv">CVC</span>
+                <span data-chargehive="cardCvv"></span>
               </div>
             </div>
           </div>
