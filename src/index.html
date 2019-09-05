@@ -163,6 +163,10 @@
       setProcessing();
     }
 
+    function doTokenize() {
+      ChargeHive.tokenizeCard();
+    }
+
     function setProcessing() {
       document.querySelector('.ch-field-placeholder').style.border = '';
       document.querySelector('#doit').setAttribute('disabled', 'disabled');
@@ -246,6 +250,7 @@
       <span data-chargehive="verify" size="full"></span>
       <button id="doit" onclick="doIt()">Pay Now</button>
       <button onclick="changeColour()">Change Colour</button>
+      <button id="doTokenize" onclick="doTokenize()">Tokenize</button>
     </div>
   </div>
   <div class="col-25">
