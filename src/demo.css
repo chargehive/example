@@ -152,3 +152,10 @@ span.price {
 .test-card-number {
   user-select: all;
 }
+
+
+.chcards {
+  width: 100%;
+  min-height: 500px;
+  border: 0;
+}
