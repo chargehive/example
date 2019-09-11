@@ -27,14 +27,14 @@
       ChargeHive.prepareCharge('YOUR_REFERENCE');
 
       /* customer info */
-      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
+      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', language: "fr"});
       ChargeHive.setBillingAddress(
         {
           address1: 'address1',
           city:     'city',
-          state:    'state',
+          county:   'state',
           country:  'GB',
-          zip:      'zip'
+          postal:   'zip'
         }
       );
 
@@ -44,27 +44,27 @@
       addToCart("Initial Product", 32.91);
 
     });
-    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info("ON_TOKEN", event)});
+    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info("ON_TOKEN", event.detail)});
     ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event) {
       document.querySelector('.container').innerText = 'Thanks for your purchase';
-      console.info("ON_SUCCESS", event);
+      console.info("ON_SUCCESS", event.detail);
       console.log(event.detail.charge_id);
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event) {
       setNormal();
       alert('sorry, card declined. ' + event.detail.message);
-      console.info("ON_DECLINE", event)
+      console.info("ON_DECLINE", event.detail)
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event) {
       return console.info(
         "ON_PENDING",
-        event
+        event.detail
       );
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, function (event) {
       return console.info(
         "ON_VERIFY",
-        event
+        event.detail
       );
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, function (event) {
@@ -156,7 +156,7 @@
         }
       }
       document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
-      ChargeHive.updateCharge({amount: total, currency: CURRENCY});
+      ChargeHive.updateCharge({amount: total, currency: CURRENCY, language: "fr"});
     }
 
     function doIt() {
