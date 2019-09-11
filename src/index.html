@@ -60,17 +60,11 @@
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event)
     {
-      return console.info(
-        "ON_PENDING",
-        event.detail
-      );
+      return console.info("ON_PENDING", event.detail);
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, function (event)
     {
-      return console.info(
-        "ON_VERIFY",
-        event.detail
-      );
+      return console.info("ON_VERIFY", event.detail);
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, function (event)
     {
@@ -99,17 +93,11 @@
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, function (event)
     {
-      return console.debug(
-        "ON_FIELD_CHANGE:",
-        event
-      );
+      return console.debug("ON_FIELD_CHANGE:", event);
     });
     ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, function (event)
     {
-      return console.debug(
-        "ON_FOCUS",
-        event
-      );
+      return console.debug("ON_FOCUS", event);
     });
     ChargeHive.addEventListener(
       ChargeHive.events.ON_BLUR,
