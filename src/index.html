@@ -28,7 +28,7 @@
       ChargeHive.prepareCharge('YOUR_REFERENCE');
 
       /* customer info */
-      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', language: "fr"});
+      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
       ChargeHive.setBillingAddress(
         {
           address1: 'address1',
@@ -158,7 +158,7 @@
         }
       }
       document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
-      ChargeHive.updateCharge({amount: total, currency: CURRENCY, language: "fr"});
+      ChargeHive.updateCharge({amount: total, currency: CURRENCY});
     }
 
     function doIt()
@@ -244,12 +244,12 @@
               <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
               <div class="ch-field-placeholder">
-                <span data-chargehive="cardName">Name on Card</span>
+                <span data-chargehive="cardName"></span>
                 <div class="ch-field-group ch-nowrap">
                   <span data-chargehive="cardBrand"></span>
-                  <span data-chargehive="cardNum">Card number</span>
+                  <span data-chargehive="cardNum"></span>
                 </div>
-                <span data-chargehive="cardExp">MM / YY</span>
+                <span data-chargehive="cardExp"></span>
                 <span data-chargehive="cardCvv"></span>
               </div>
             </div>
