@@ -142,6 +142,8 @@
     if(e.target.matches('[name="method"]'))
     {
       setMethod(e.target.value);
+      var s = e.target.value.split('~');
+      ChargeHive.setPaymentMethodTypeProvider(s[0], s[1]);
     }
   });
 
