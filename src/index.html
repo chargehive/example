@@ -29,9 +29,31 @@
               Nothing Added
             </div>
           </div>
+
+
           <h3>Payment</h3>
-          <span data-chargehive="applepay"></span>
-          <div class="row">
+          <div>
+            <span>
+              <label>
+                <input type="radio" name="method"
+                       value="PAYMENT_METHOD_TYPE_CARD~PAYMENT_METHOD_PROVIDER_FORM"/>
+                CARD
+              </label>
+              </span>
+
+            <span>
+              <label>
+                <input type="radio" name="method"
+                       value="PAYMENT_METHOD_TYPE_DIGITALWALLET~PAYMENT_METHOD_PROVIDER_APPLEPAY"/>
+                <span data-chargehive="applepay"></span>
+              </label>
+            </span>
+          </div>
+
+          <div class="row inputContainer" id="PAYMENT_METHOD_TYPE_DIGITALWALLET~PAYMENT_METHOD_PROVIDER_APPLEPAY">
+            APPLE
+          </div>
+          <div class="row inputContainer" id="PAYMENT_METHOD_TYPE_CARD~PAYMENT_METHOD_PROVIDER_FORM">
             <div class="col-75">
               <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
@@ -107,6 +129,28 @@
     addToCart('Initial Product', 32.91);
 
   });
+  ChargeHive.addEventListener(ChargeHive.events.ON_METHOD_TYPE_CHANGE, function (event)
+  {
+    console.info('ON_METHOD_TYPE_CHANGE', event.detail);
+    var t = event.detail.type + '~' + event.detail.provider;
+    document.querySelector('input[value="' + t + '"]').checked = true;
+    setMethod(t);
+  });
+
+  document.addEventListener('change', function (e)
+  {
+    if(e.target.matches('[name="method"]'))
+    {
+      setMethod(e.target.value);
+    }
+  });
+
+  function setMethod(type)
+  {
+    document.querySelectorAll('.inputContainer').forEach(function (e) {e.style.display = 'none';});
+    document.getElementById(type).style.display = 'block';
+  }
+
   ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info('ON_TOKEN', event.detail);});
   ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event)
   {

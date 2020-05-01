@@ -159,3 +159,7 @@ span.price {
   min-height: 500px;
   border: 0;
 }
+
+.inputContainer {
+  display: none;
+}
