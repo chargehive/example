@@ -132,26 +132,20 @@
   ChargeHive.addEventListener(ChargeHive.events.ON_METHOD_TYPE_CHANGE, function (event)
   {
     console.info('ON_METHOD_TYPE_CHANGE', event.detail);
-    var t = event.detail.type + '~' + event.detail.provider;
-    document.querySelector('input[value="' + t + '"]').checked = true;
-    setMethod(t);
+    var type = event.detail.type + '~' + event.detail.provider;
+    document.querySelector('input[value="' + type + '"]').checked = true;
+    document.querySelectorAll('.inputContainer').forEach(function (e) {e.style.display = 'none';});
+    document.getElementById(type).style.display = 'block';
   });
 
   document.addEventListener('change', function (e)
   {
     if(e.target.matches('[name="method"]'))
     {
-      setMethod(e.target.value);
       var s = e.target.value.split('~');
       ChargeHive.setPaymentMethodTypeProvider(s[0], s[1]);
     }
   });
-
-  function setMethod(type)
-  {
-    document.querySelectorAll('.inputContainer').forEach(function (e) {e.style.display = 'none';});
-    document.getElementById(type).style.display = 'block';
-  }
 
   ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info('ON_TOKEN', event.detail);});
   ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event)
