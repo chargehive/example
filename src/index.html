@@ -6,215 +6,6 @@
 
   <!-- START CHARGEHIVE SCRIPT -->
   <link rel="stylesheet" href="https://cdn.paymentauth.com/merchant/latest/v1/css/default.css">
-  <script src="https://cdn.paymentauth.com/merchant/latest/v1/js/chargehive.min.js"></script>
-  <script>
-    ChargeHive.initialize(
-      'PLACEMENT_TOKEN_HERE', // your placement token
-      'PROJECT_ID_HERE' // your project id
-    );
-  </script>
-  <!-- END CHARGEHIVE SCRIPT -->
-
-  <script>
-    var CURRENCY = 'USD';
-    var CART = [];
-
-    /* Event handlers */
-    ChargeHive.addEventListener(ChargeHive.events.ON_READY, function (event)
-    {
-      console.debug("ON_READY", event);
-
-      // your merchant reference
-      ChargeHive.prepareCharge('YOUR_REFERENCE');
-
-      /* customer info */
-      ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
-      ChargeHive.setBillingAddress(
-        {
-          address1: 'address1',
-          city: 'city',
-          county: 'state',
-          country: 'GB',
-          postal: 'zip'
-        }
-      );
-
-      //Simplify Setup
-      ChargeHive.setNameOnCard("John Smith");
-      ChargeHive.setCardExpiry(12, 21);
-      addToCart("Initial Product", 32.91);
-
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info("ON_TOKEN", event.detail)});
-    ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event)
-    {
-      document.querySelector('.container').innerText = 'Thanks for your purchase';
-      console.info("ON_SUCCESS", event.detail);
-      console.log(event.detail.charge_id);
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event)
-    {
-      setNormal();
-      alert('sorry, card declined. ' + event.detail.message);
-      console.info("ON_DECLINE", event.detail)
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event)
-    {
-      return console.info("ON_PENDING", event.detail);
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, function (event)
-    {
-      return console.info("ON_VERIFY", event.detail);
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, function (event)
-    {
-      setNormal();
-
-      if(!event.detail)
-      {
-        console.error('Error Without Detail:', event);
-
-      }
-      else
-      {
-        console.error('Error:', event.detail);
-      }
-      if(event.detail.type && event.detail.type === 'card')
-      {
-        document.querySelector('.ch-field-placeholder').style.border = '1px solid red';
-      }
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, function (event)
-    {
-      return console.debug(
-        "ON_ALL_VALID",
-        event
-      );
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, function (event)
-    {
-      return console.debug("ON_FIELD_CHANGE:", event);
-    });
-    ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, function (event)
-    {
-      return console.debug("ON_FOCUS", event);
-    });
-    ChargeHive.addEventListener(
-      ChargeHive.events.ON_BLUR,
-      function (event) { return console.debug("ON_BLUR", event); }
-    );
-
-    ChargeHive.setStyle(
-      {
-        all: {
-          default: {color: 'black'},
-          complete: {color: 'green'},
-          empty: {color: 'black'},
-          invalid: {color: 'red'}
-        },
-        cardNum: {
-          invalid: {color: 'orange'}
-        },
-        cardExp: {
-          invalid: {color: 'pink'}
-        },
-        cardCvv: {
-          invalid: {color: 'purple'}
-        }
-      }
-    );
-
-    function addToCart(name, price)
-    {
-      CART.push({name: name, price: price});
-
-      var cartEle = document.getElementById('cart');
-      cartEle.innerHTML = '';
-
-      for(var i in CART)
-      {
-        if(CART.hasOwnProperty(i))
-        {
-          var div = document.createElement('div');
-          div.classList.add('col-75');
-          div.innerHTML = CART[i].name + ' ¤' + CART[i].price;
-          cartEle.appendChild(div);
-        }
-      }
-      updateTransaction();
-    }
-
-    function updateTransaction()
-    {
-      ChargeHive.clearOrderItems();
-      var total = 0;
-      for(var i in CART)
-      {
-        if(CART.hasOwnProperty(i))
-        {
-          var itemPrice = Math.floor(CART[i].price * 100);
-          ChargeHive.addOrderItem({name: CART[i].name, unitPrice: itemPrice});
-          total += itemPrice;
-        }
-      }
-      document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
-      ChargeHive.updateCharge({amount: total, currency: CURRENCY});
-    }
-
-    function doIt()
-    {
-      ChargeHive.authorizeCharge();
-      setProcessing();
-    }
-
-    function doTokenize()
-    {
-      ChargeHive.tokenizeCard();
-    }
-
-    function setProcessing()
-    {
-      document.querySelector('.ch-field-placeholder').style.border = '';
-      document.querySelector('#doit').setAttribute('disabled', 'disabled');
-      document.querySelector('#doit').innerText = 'Processing...';
-    }
-
-    function setNormal()
-    {
-      document.querySelector('#doit').removeAttribute('disabled');
-      document.querySelector('#doit').innerText = 'Pay Now';
-    }
-
-    function changeColour()
-    {
-      var letters = '0123456789ABCDEF';
-      var color = '#';
-      for(var i = 0; i < 6; i++)
-      {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-
-      ChargeHive.setStyle(
-        {
-          cardNum: {
-            default: {
-              color: color,
-              ':hover': {color: 'orange'}
-            }
-          }
-        }
-      );
-    }
-
-    document.addEventListener('change', function (e)
-    {
-      if(e.target.id === 'currencySelector')
-      {
-        CURRENCY = e.target.value;
-        updateTransaction();
-      }
-    });
-  </script>
   <title>Checkout</title>
 </head>
 <body>
@@ -239,6 +30,7 @@
             </div>
           </div>
           <h3>Payment</h3>
+          <span data-chargehive="applepay"></span>
           <div class="row">
             <div class="col-75">
               <div id="total"></div>
@@ -275,5 +67,215 @@
 <iframe src="https://paymentauth.com/chargehive/card-numbers" class="chcards"></iframe>
 <div id="card-templates"></div>
 
+
+<script src="https://cdn.paymentauth.com/merchant/latest/v1/js/chargehive.min.js"></script>
+<script>
+  ChargeHive.initialize(
+    'PLACEMENT_TOKEN_HERE', // your placement token
+    'PROJECT_ID_HERE' // your project id
+  );
+</script>
+<!-- END CHARGEHIVE SCRIPT -->
+
+<script>
+  var CURRENCY = 'USD';
+  var CART = [];
+
+  /* Event handlers */
+  ChargeHive.addEventListener(ChargeHive.events.ON_READY, function (event)
+  {
+    console.debug('ON_READY', event);
+
+    // your merchant reference
+    ChargeHive.prepareCharge('YOUR_REFERENCE');
+
+    /* customer info */
+    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer'});
+    ChargeHive.setBillingAddress(
+      {
+        address1: 'address1',
+        city: 'city',
+        county: 'state',
+        country: 'GB',
+        postal: 'zip',
+      }
+    );
+
+    //Simplify Setup
+    ChargeHive.setNameOnCard('John Smith');
+    ChargeHive.setCardExpiry(12, 21);
+    addToCart('Initial Product', 32.91);
+
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_TOKEN, function (event) {console.info('ON_TOKEN', event.detail);});
+  ChargeHive.addEventListener(ChargeHive.events.ON_SUCCESS, function (event)
+  {
+    document.querySelector('.container').innerText = 'Thanks for your purchase';
+    console.info('ON_SUCCESS', event.detail);
+    console.log(event.detail.charge_id);
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event)
+  {
+    setNormal();
+    alert('sorry, card declined. ' + event.detail.message);
+    console.info('ON_DECLINE', event.detail);
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event)
+  {
+    return console.info('ON_PENDING', event.detail);
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_VERIFY, function (event)
+  {
+    return console.info('ON_VERIFY', event.detail);
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_ERROR, function (event)
+  {
+    setNormal();
+
+    if(!event.detail)
+    {
+      console.error('Error Without Detail:', event);
+
+    }
+    else
+    {
+      console.error('Error:', event.detail);
+    }
+    if(event.detail.type && event.detail.type === 'card')
+    {
+      document.querySelector('.ch-field-placeholder').style.border = '1px solid red';
+    }
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, function (event)
+  {
+    return console.debug(
+      'ON_ALL_VALID',
+      event
+    );
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, function (event)
+  {
+    return console.debug('ON_FIELD_CHANGE:', event);
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, function (event)
+  {
+    return console.debug('ON_FOCUS', event);
+  });
+  ChargeHive.addEventListener(
+    ChargeHive.events.ON_BLUR,
+    function (event) { return console.debug('ON_BLUR', event); }
+  );
+
+  ChargeHive.setStyle(
+    {
+      all: {
+        default: {color: 'black'},
+        complete: {color: 'green'},
+        empty: {color: 'black'},
+        invalid: {color: 'red'},
+      },
+      cardNum: {
+        invalid: {color: 'orange'},
+      },
+      cardExp: {
+        invalid: {color: 'pink'},
+      },
+      cardCvv: {
+        invalid: {color: 'purple'},
+      },
+    }
+  );
+
+  function addToCart(name, price)
+  {
+    CART.push({name: name, price: price});
+
+    var cartEle = document.getElementById('cart');
+    cartEle.innerHTML = '';
+
+    for(var i in CART)
+    {
+      if(CART.hasOwnProperty(i))
+      {
+        var div = document.createElement('div');
+        div.classList.add('col-75');
+        div.innerHTML = CART[i].name + ' ¤' + CART[i].price;
+        cartEle.appendChild(div);
+      }
+    }
+    updateTransaction();
+  }
+
+  function updateTransaction()
+  {
+    ChargeHive.clearOrderItems();
+    var total = 0;
+    for(var i in CART)
+    {
+      if(CART.hasOwnProperty(i))
+      {
+        var itemPrice = Math.floor(CART[i].price * 100);
+        ChargeHive.addOrderItem({name: CART[i].name, unitPrice: itemPrice});
+        total += itemPrice;
+      }
+    }
+    document.getElementById('total').innerText = CURRENCY + ' ' + (total / 100);
+    ChargeHive.updateCharge({amount: total, currency: CURRENCY});
+  }
+
+  function doIt()
+  {
+    ChargeHive.authorizeCharge();
+    setProcessing();
+  }
+
+  function doTokenize()
+  {
+    ChargeHive.tokenizeCard();
+  }
+
+  function setProcessing()
+  {
+    document.querySelector('.ch-field-placeholder').style.border = '';
+    document.querySelector('#doit').setAttribute('disabled', 'disabled');
+    document.querySelector('#doit').innerText = 'Processing...';
+  }
+
+  function setNormal()
+  {
+    document.querySelector('#doit').removeAttribute('disabled');
+    document.querySelector('#doit').innerText = 'Pay Now';
+  }
+
+  function changeColour()
+  {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for(var i = 0; i < 6; i++)
+    {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    ChargeHive.setStyle(
+      {
+        cardNum: {
+          default: {
+            color: color,
+            ':hover': {color: 'orange'},
+          },
+        },
+      }
+    );
+  }
+
+  document.addEventListener('change', function (e)
+  {
+    if(e.target.id === 'currencySelector')
+    {
+      CURRENCY = e.target.value;
+      updateTransaction();
+    }
+  });
+</script>
 </body>
 </html>
