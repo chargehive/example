@@ -254,7 +254,7 @@
     {
       if(CART.hasOwnProperty(i))
       {
-        var itemPrice = Math.floor(CART[i].price * 100);
+        var itemPrice = Math.round(CART[i].price * 100);
         ChargeHive.addOrderItem({name: CART[i].name, unitPrice: itemPrice});
         total += itemPrice;
       }
