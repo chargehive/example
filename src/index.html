@@ -35,25 +35,23 @@
           <div>
             <span>
               <label>
-                <input type="radio" name="method"
-                       value="PAYMENT_METHOD_TYPE_CARD~PAYMENT_METHOD_PROVIDER_FORM"/>
+                <input type="radio" name="method" value="PLACEMENT_CAPABILITY_CARD_FORM"/>
                 CARD
               </label>
               </span>
 
             <span>
               <label>
-                <input type="radio" name="method"
-                       value="PAYMENT_METHOD_TYPE_DIGITALWALLET~PAYMENT_METHOD_PROVIDER_APPLEPAY"/>
+                <input type="radio" name="method" value="PLACEMENT_CAPABILITY_APPLE_PAY"/>
                 <span data-chargehive="applepay"></span>
               </label>
             </span>
           </div>
 
-          <div class="row inputContainer" id="PAYMENT_METHOD_TYPE_DIGITALWALLET~PAYMENT_METHOD_PROVIDER_APPLEPAY">
+          <div class="row inputContainer" id="PLACEMENT_CAPABILITY_APPLE_PAY">
             APPLE
           </div>
-          <div class="row inputContainer" id="PAYMENT_METHOD_TYPE_CARD~PAYMENT_METHOD_PROVIDER_FORM">
+          <div class="row inputContainer" id="PLACEMENT_CAPABILITY_CARD_FORM">
             <div class="col-75">
               <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
@@ -132,18 +130,16 @@
   ChargeHive.addEventListener(ChargeHive.events.ON_METHOD_TYPE_CHANGE, function (event)
   {
     console.info('ON_METHOD_TYPE_CHANGE', event.detail);
-    var type = event.detail.type + '~' + event.detail.provider;
-    document.querySelector('input[value="' + type + '"]').checked = true;
+    document.querySelector('input[value="' + event.detail.type + '"]').checked = true;
     document.querySelectorAll('.inputContainer').forEach(function (e) {e.style.display = 'none';});
-    document.getElementById(type).style.display = 'block';
+    document.getElementById(event.detail.type).style.display = 'block';
   });
 
   document.addEventListener('change', function (e)
   {
     if(e.target.matches('[name="method"]'))
     {
-      var s = e.target.value.split('~');
-      ChargeHive.setPaymentMethodTypeProvider(s[0], s[1]);
+      ChargeHive.setPaymentMethodType(e.target.value);
     }
   });
 
