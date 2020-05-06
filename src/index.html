@@ -33,25 +33,35 @@
 
           <h3>Payment</h3>
           <div>
-            <span>
+            <span capability="PLACEMENT_CAPABILITY_CARD_FORM">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_CARD_FORM"/>
-                CARD
+                <span data-chargehive="cardMarks" highlight types="visa mastercard american-express"></span>
               </label>
               </span>
 
-            <span>
+            <span capability="PLACEMENT_CAPABILITY_APPLE_PAY">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_APPLE_PAY"/>
-                <span data-chargehive="applepay"></span>
+                <span data-chargehive="applepayMark"></span>
+              </label>
+            </span>
+
+            <span capability="PLACEMENT_CAPABILITY_PAYPAL">
+              <label>
+                <input type="radio" name="method" value="PLACEMENT_CAPABILITY_PAYPAL"/>
+                <span data-chargehive="paypalMark"></span>
               </label>
             </span>
           </div>
 
-          <div class="row inputContainer" id="PLACEMENT_CAPABILITY_APPLE_PAY">
+          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_PAYPAL">
+            PAYPAL
+          </div>
+          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_APPLE_PAY">
             APPLE
           </div>
-          <div class="row inputContainer" id="PLACEMENT_CAPABILITY_CARD_FORM">
+          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_CARD_FORM">
             <div class="col-75">
               <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
@@ -131,8 +141,27 @@
   {
     console.info('ON_METHOD_TYPE_CHANGE', event.detail);
     document.querySelector('input[value="' + event.detail.type + '"]').checked = true;
-    document.querySelectorAll('.inputContainer').forEach(function (e) {e.style.display = 'none';});
-    document.getElementById(event.detail.type).style.display = 'block';
+    document.querySelectorAll('[capability].inputContainer').forEach(
+      function (e)
+      {
+        if(e.getAttribute('capability') !== event.detail.type)
+        {
+          e.classList.remove('selected');
+        }
+      });
+    document.querySelector('[capability=' + event.detail.type + '].inputContainer').classList.add('selected');
+  });
+  ChargeHive.addEventListener(ChargeHive.events.ON_CAPABILITIES, function (event)
+  {
+    console.info('ON_CAPABILITIES', event.detail);
+    document.querySelectorAll('[capability]').forEach(
+      function (e)
+      {
+        if(event.detail.indexOf(e.getAttribute('capability')) === -1)
+        {
+          e.classList.add('unavailable');
+        }
+      });
   });
 
   document.addEventListener('change', function (e)

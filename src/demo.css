@@ -163,3 +163,11 @@ span.price {
 .inputContainer {
   display: none;
 }
+
+.inputContainer.selected {
+  display: block;
+}
+
+[capability].unavailable {
+  display: none !important;
+}
