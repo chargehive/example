@@ -151,13 +151,13 @@
       });
     document.querySelector('[capability=' + event.detail.type + '].inputContainer').classList.add('selected');
   });
-  ChargeHive.addEventListener(ChargeHive.events.ON_CAPABILITIES, function (event)
+  ChargeHive.addEventListener(ChargeHive.events.ON_INIT, function (event)
   {
-    console.info('ON_CAPABILITIES', event.detail);
+    console.info('ON_INIT', event.detail);
     document.querySelectorAll('[capability]').forEach(
       function (e)
       {
-        if(event.detail.indexOf(e.getAttribute('capability')) === -1)
+        if(event.detail.Capabilities.indexOf(e.getAttribute('capability')) === -1)
         {
           e.classList.add('unavailable');
         }
