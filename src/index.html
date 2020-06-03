@@ -55,12 +55,6 @@
             </span>
           </div>
 
-          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_PAYPAL">
-            PAYPAL
-          </div>
-          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_APPLE_PAY">
-            APPLE
-          </div>
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_CARD_FORM">
             <div class="col-75">
               <div id="total"></div>
@@ -97,7 +91,7 @@
 <iframe src="https://paymentauth.com/chargehive/card-numbers" class="chcards"></iframe>
 <div id="card-templates"></div>
 
-
+<!-- START CHARGEHIVE SCRIPT -->
 <script src="https://cdn.paymentauth.com/merchant/latest/v1/js/chargehive.min.js"></script>
 <script>
   ChargeHive.initialize(
@@ -112,9 +106,20 @@
   var CART = [];
 
   /* Event handlers */
-  ChargeHive.addEventListener(ChargeHive.events.ON_READY, function (event)
+  ChargeHive.addEventListener(ChargeHive.events.ON_INIT, function (event)
   {
-    console.debug('ON_READY', event);
+    console.info('ON_INIT', event.detail);
+
+    ChargeHive.setPaymentMethodType('PLACEMENT_CAPABILITY_CARD_FORM');
+
+    document.querySelectorAll('[capability]').forEach(
+      function (e)
+      {
+        if(event.detail.Capabilities.indexOf(e.getAttribute('capability')) === -1)
+        {
+          e.classList.add('unavailable');
+        }
+      });
 
     // your merchant reference
     ChargeHive.prepareCharge('YOUR_REFERENCE');
@@ -149,19 +154,11 @@
           e.classList.remove('selected');
         }
       });
-    document.querySelector('[capability=' + event.detail.type + '].inputContainer').classList.add('selected');
-  });
-  ChargeHive.addEventListener(ChargeHive.events.ON_INIT, function (event)
-  {
-    console.info('ON_INIT', event.detail);
-    document.querySelectorAll('[capability]').forEach(
-      function (e)
-      {
-        if(event.detail.Capabilities.indexOf(e.getAttribute('capability')) === -1)
-        {
-          e.classList.add('unavailable');
-        }
-      });
+    var container = document.querySelector('[capability=' + event.detail.type + '].inputContainer');
+    if(container)
+    {
+      container.classList.add('selected');
+    }
   });
 
   document.addEventListener('change', function (e)
@@ -213,22 +210,22 @@
   });
   ChargeHive.addEventListener(ChargeHive.events.ON_ALL_VALID, function (event)
   {
-    return console.debug(
+    return console.log(
       'ON_ALL_VALID',
       event
     );
   });
   ChargeHive.addEventListener(ChargeHive.events.ON_FIELD_CHANGE, function (event)
   {
-    return console.debug('ON_FIELD_CHANGE:', event);
+    return console.log('ON_FIELD_CHANGE:', event);
   });
   ChargeHive.addEventListener(ChargeHive.events.ON_FOCUS, function (event)
   {
-    return console.debug('ON_FOCUS', event);
+    return console.log('ON_FOCUS', event);
   });
   ChargeHive.addEventListener(
     ChargeHive.events.ON_BLUR,
-    function (event) { return console.debug('ON_BLUR', event); }
+    function (event) { return console.log('ON_BLUR', event); }
   );
 
   ChargeHive.setStyle(
