@@ -53,6 +53,13 @@
                 <span data-chargehive="paypalMark"></span>
               </label>
             </span>
+
+            <span capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
+              <label>
+                <input type="radio" name="method" value="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM"/>
+                <span data-chargehive="directDebitMark"></span>
+              </label>
+            </span>
           </div>
 
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_CARD_FORM">
@@ -67,6 +74,19 @@
                 </div>
                 <span data-chargehive="cardExp"></span>
                 <span data-chargehive="cardCvv"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
+            <div class="col-75">
+              <div id="total"></div>
+              <label class="ch-field-label">Direct Debit</label>
+              <div class="ch-field-placeholder">
+                <span data-chargehive="accountName"></span>
+                <span data-chargehive="accountNum"></span>
+                <span data-chargehive="sortCode"></span>
+                <span data-chargehive="payerReference"></span>  
               </div>
             </div>
           </div>
@@ -111,7 +131,6 @@
     console.info('ON_INIT', event.detail);
 
     ChargeHive.setPaymentMethodType('PLACEMENT_CAPABILITY_CARD_FORM');
-
     document.querySelectorAll('[capability]').forEach(
       function (e)
       {
@@ -179,7 +198,11 @@
   ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event)
   {
     setNormal();
-    alert('sorry, card declined. ' + event.detail.message);
+    let msg = 'sorry, card declined.' 
+    if(event.detail.payment_scheme == 'direct-debit'){
+      msg = 'sorry, bank details declined.'
+    }
+    alert(msg+' '+ event.detail.message);
     console.info('ON_DECLINE', event.detail);
   });
   ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event)
