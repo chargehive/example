@@ -32,6 +32,7 @@
 
 
           <h3>Payment</h3>
+          <div id="total"></div>
           <div>
             <span capability="PLACEMENT_CAPABILITY_CARD_FORM">
               <label>
@@ -64,7 +65,6 @@
 
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_CARD_FORM">
             <div class="col-75">
-              <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
               <div class="ch-field-placeholder">
                 <span data-chargehive="cardName"></span>
@@ -80,13 +80,12 @@
 
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
             <div class="col-75">
-              <div id="total"></div>
               <label class="ch-field-label">Direct Debit</label>
               <div class="ch-field-placeholder">
                 <span data-chargehive="accountName"></span>
                 <span data-chargehive="accountNum"></span>
                 <span data-chargehive="sortCode"></span>
-                <span data-chargehive="payerReference"></span>  
+                <span data-chargehive="payerReference"></span>
               </div>
             </div>
           </div>
@@ -198,11 +197,12 @@
   ChargeHive.addEventListener(ChargeHive.events.ON_DECLINED, function (event)
   {
     setNormal();
-    let msg = 'sorry, card declined.' 
-    if(event.detail.payment_scheme == 'direct-debit'){
-      msg = 'sorry, bank details declined.'
+    var msg = 'sorry, card declined.';
+    if(event.detail.payment_scheme === 'direct-debit')
+    {
+      msg = 'sorry, bank details declined.';
     }
-    alert(msg+' '+ event.detail.message);
+    alert(msg + ' ' + event.detail.message);
     console.info('ON_DECLINE', event.detail);
   });
   ChargeHive.addEventListener(ChargeHive.events.ON_PENDING, function (event)
