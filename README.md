@@ -31,6 +31,6 @@ or all as a single command:
 
     PAUTH_CDN="https://cdn.paymentauth.me:8823" PAUTH_PLACEMENT_TOKEN="CHANGE-ME" PAUTH_PROJECT_ID="CHANGE-ME2" php -S 127.0.0.1:9180 -t ./src
 
-###Troubleshooting
+### Troubleshooting
 
 - If chargehive loads but `ChargeHive.onInit.then(function (event){})` is never fired, check that the `PAUTH_CDN` is set correctly. (probably https://cdn.paymentauth.me:8823)
