@@ -125,7 +125,7 @@
   var CART = [];
 
   /* Event handlers */
-  ChargeHive.addEventListener(ChargeHive.events.ON_INIT, function (event)
+  ChargeHive.onInit.then(function (event)
   {
     console.info('ON_INIT', event.detail);
 
