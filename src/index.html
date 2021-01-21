@@ -3,7 +3,6 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="demo.css">
-
   <!-- START CHARGEHIVE SCRIPT -->
   <link rel="stylesheet" href="https://cdn.paymentauth.com/merchant/latest/v1/css/default.css">
   <title>Checkout</title>
@@ -16,6 +15,10 @@
       <div class="row">
         <div class="col-50">
           <h3>Cart</h3>
+
+          <label for="termsCheckBox">Accept Terms And Conditions
+            <input type="checkbox" id="termsCheckBox" checked>
+          </label>
           <label>
             Currency:
             <select id="currencySelector">
@@ -29,32 +32,41 @@
               Nothing Added
             </div>
           </div>
-
-
+          <!--GOOGLE PAY BUTTON-->
+          <span data-chargehive="googlepayButton" button-type="short" button-color="black"></span>
+          <!--APPLE PAY BUTTON-->
+          <span data-chargehive="applepayButton"></span>
           <h3>Payment</h3>
-          <div id="total"></div>
           <div>
+            <!--CARD PAYMENT OPTION-->
             <span capability="PLACEMENT_CAPABILITY_CARD_FORM">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_CARD_FORM"/>
                 <span data-chargehive="cardMarks" highlight types="visa mastercard american-express"></span>
               </label>
               </span>
-
+            <!--APPLE PAY OPTION-->
             <span capability="PLACEMENT_CAPABILITY_APPLE_PAY">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_APPLE_PAY"/>
                 <span data-chargehive="applepayMark"></span>
               </label>
             </span>
-
+            <!--GOOGLE PAY OPTION-->
+            <span capability="PLACEMENT_CAPABILITY_GOOGLE_PAY">
+              <label>
+                <input type="radio" name="method" value="PLACEMENT_CAPABILITY_GOOGLE_PAY"/>
+                <span data-chargehive="googlepayMark"></span>
+              </label>
+            </span>
+            <!--PAYPAL PAYMENT OPTION-->
             <span capability="PLACEMENT_CAPABILITY_PAYPAL">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_PAYPAL"/>
                 <span data-chargehive="paypalMark"></span>
               </label>
             </span>
-
+            <!--DIRECT DEBIT PAYMENT OPTION-->
             <span capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
               <label>
                 <input type="radio" name="method" value="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM"/>
@@ -62,9 +74,10 @@
               </label>
             </span>
           </div>
-
+          <!--CARD PAYMENT INPUT AREA-->
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_CARD_FORM">
             <div class="col-75">
+              <div id="total"></div>
               <label class="ch-field-label">Credit card number</label>
               <div class="ch-field-placeholder">
                 <span data-chargehive="cardName"></span>
@@ -77,7 +90,7 @@
               </div>
             </div>
           </div>
-
+          <!--DIRECT DEBIT PAYMENT INPUT AREA-->
           <div class="row inputContainer" capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
             <div class="col-75">
               <label class="ch-field-label">Direct Debit</label>
@@ -98,6 +111,7 @@
     </div>
   </div>
   <div class="col-25">
+    <!--SHOPPING CART-->
     <div class="container">
       <h4>Products <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h4>
       <p><a href="#" onclick="addToCart('Blue Widget',9.99)">Blue Widget</a> <span class="price">¤9.99</span></p>
@@ -115,7 +129,8 @@
 <script>
   ChargeHive.initialize(
     'PLACEMENT_TOKEN_HERE', // your placement token
-    'PROJECT_ID_HERE' // your project id
+    'PROJECT_ID_HERE', // your project id
+    {"currency": "USD", "country": "GB"}
   );
 </script>
 <!-- END CHARGEHIVE SCRIPT -->
@@ -125,40 +140,6 @@
   const CART = [];
 
   /* Event handlers */
-  ChargeHive.onInit.then(function (event) {
-    console.info('ON_INIT', event.detail);
-
-    ChargeHive.setPaymentMethodType('PLACEMENT_CAPABILITY_CARD_FORM');
-    document.querySelectorAll('[capability]').forEach(
-      function (e) {
-        if(event.detail.Capabilities.indexOf(e.getAttribute('capability')) === -1)
-        {
-          e.classList.add('unavailable');
-        }
-      });
-
-    // your merchant reference
-    ChargeHive.prepareCharge('YOUR_REFERENCE');
-
-    /* customer info */
-    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', email: 'test@example.com'});
-    ChargeHive.setBillingAddress(
-      {
-        address1: 'address1',
-        city:     'city',
-        county:   'state',
-        country:  'GB',
-        postal:   'zip',
-      }
-    );
-
-    //Simplify Setup
-    ChargeHive.setNameOnCard('John Smith');
-    ChargeHive.setCardExpiry(12, 21);
-    addToCart('Initial Product', 32.91);
-
-  });
-
   ChargeHive.addEventListener(
     ChargeHive.events.CHARGE_ID,
     function (event) {console.info("CHARGE_ID event:", event.detail)}
@@ -211,10 +192,37 @@
     ChargeHive.events.ON_FOCUS,
     function (event) {console.info("ON_FOCUS event:", event.detail)}
   )
-  ChargeHive.addEventListener(
-    ChargeHive.events.ON_INIT,
-    function (event) {console.info("ON_INIT event:", event.detail)}
-  )
+  ChargeHive.onInit.then(function (event) {
+    console.info("ON_INIT event:", event.detail)
+    ChargeHive.setPaymentMethodType('PLACEMENT_CAPABILITY_CARD_FORM');
+    document.querySelectorAll('[capability]').forEach(
+      function (e) {
+        if(event.detail.Capabilities.indexOf(e.getAttribute('capability')) === -1)
+        {
+          e.classList.add('unavailable');
+        }
+      });
+
+    // your merchant reference
+    ChargeHive.prepareCharge('YOUR_REFERENCE');
+
+    /* customer info */
+    ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', email: 'test@example.com'});
+    ChargeHive.setBillingAddress(
+      {
+        address1: 'address1',
+        city:     'city',
+        county:   'state',
+        country:  'GB',
+        postal:   'zip',
+      }
+    );
+
+    //Simplify Setup
+    ChargeHive.setNameOnCard('John Smith');
+    ChargeHive.setCardExpiry(12, 21);
+    addToCart('Initial Product', 32.91);
+  });
   ChargeHive.addEventListener(
     ChargeHive.events.ON_METHOD_TYPE_CHANGE,
     function (event) {
