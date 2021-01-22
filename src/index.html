@@ -169,7 +169,6 @@
     function (event) {
       console.info("ON_DECLINED event:", event.detail)
       setNormal();
-      alert('Sorry, transaction declined: ' + event.detail.message);
     }
   );
   ChargeHive.addEventListener(
