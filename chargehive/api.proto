@@ -1,0 +1,443 @@
+syntax = "proto3";
+package chargehive;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
+import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
+import "chargehive/chtype/generic.proto";
+import "chargehive/chtype/fraud.proto";
+import "chargehive/chtype/payment_method.proto";
+import "chargehive/chtype/payment_method_schema.proto";
+import "chargehive/chtype/enum.proto";
+import "chargehive/chtype/charge.proto";
+import "chargehive/chtype/transaction.proto";
+import "chargehive/chtype/response_codes.proto";
+import "chargehive/chtype/country_codes.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = false;
+option (gogoproto.goproto_registration) = true;
+option go_package = "chargehive";
+option php_namespace = "ChargeHive\\Api\\Grpc";
+option php_metadata_namespace = "ChargeHive\\Api\\Grpc\\Metadata";
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+  info: {
+    title: "ChargeHive API";
+    version: "1.0";
+    contact: {
+      name: "ChargeHive";
+      url: "https://chargehive.com";
+      email: "support@chargehive.com";
+    };
+  };
+  host: "api.chargehive.com";
+  external_docs: {
+    url: "https://chargehive.com/docs";
+    description: "ChargeHive Documentation";
+  }
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+  security_definitions: {
+    security: {
+      key: "ProjectID";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "X-Project-ID";
+      }
+    }
+    security: {
+      key: "AccessToken";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization";
+      }
+    }
+  }
+  security: {
+    security_requirement: {
+      key: "AccessToken";
+      value: {};
+    }
+    security_requirement: {
+      key: "ProjectID";
+      value: {};
+    }
+  }
+};
+
+service ChargeHive {
+  rpc Ping (StringTransport) returns (StringTransport) {
+    option (google.api.http) = {
+      post: "/v1/ping"
+      body: "*"
+    };
+  }
+
+  rpc ConnectionValidate (ConnectionValidateRequest) returns (ConnectionValidateResponse) {
+    option (google.api.http) = {
+      post: "/v1/connection/validate"
+      body: "*"
+    };
+  }
+  rpc ConnectionValidationConfirm (ConnectionConfirmRequest) returns (ConnectionValidateResponse) {
+    option (google.api.http) = {
+      put: "/v1/connection/validate/{request_id}"
+      body: "*"
+    };
+  }
+
+  rpc ConfigurationApply (ConfigurationApplyRequest) returns (ConfigurationApplyResponse) {
+    option (google.api.http) = {
+      post: "/v1/configuration/apply"
+      body: "*"
+    };
+  }
+
+  rpc ConfigurationGet (ConfigurationGetRequest) returns (ConfigurationGetResponse) {
+    option (google.api.http) = {
+      post: "/v1/configuration/get"
+      body: "*"
+    };
+  }
+
+  rpc ConfigurationList (ConfigurationListRequest) returns (ConfigurationListResponse) {
+    option (google.api.http) = {
+      post: "/v1/configuration/list"
+      body: "*"
+    };
+  }
+
+  rpc ConfigurationDelete (ConfigurationDeleteRequest) returns (ConfigurationDeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/configuration/{kind}/{id}"
+    };
+  }
+
+  rpc SchedulerTrigger (google.protobuf.Empty) returns (SchedulerTriggerResponse) {
+    option (google.api.http) = {
+      post: "/v1/scheduler/ontrigger"
+    };
+  }
+
+  rpc SchedulerOnDemand (SchedulerOnDemandRequest) returns (SchedulerOnDemandResponse) {
+    option (google.api.http) = {
+      post: "/v1/scheduler/ondemand"
+      body: "*"
+    };
+  }
+
+  rpc ChargeCreate (ChargeCreateRequest) returns (ChargeCreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge"
+      body: "*"
+    };
+  }
+
+  rpc ChargeModify (ChargeModifyRequest) returns (ChargeModifyResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/modify"
+      body: "*"
+    };
+  }
+
+  rpc ChargeAuthorize (ChargeAuthorizeRequest) returns (ChargeAuthorizeResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/authorize"
+      body: "*"
+    };
+  }
+
+  rpc ChargeCapture (ChargeCaptureRequest) returns (ChargeCaptureResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/capture"
+      body: "*"
+    };
+  }
+
+  rpc ChargeRefund (ChargeRefundRequest) returns (ChargeRefundResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/refund"
+      body: "*"
+    };
+  }
+
+  rpc ChargeCancel (ChargeCancelRequest) returns (ChargeCancelResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/cancel"
+      body: "*"
+    };
+  }
+
+  rpc ChargeFraudScan (ChargeFraudScanRequest) returns (ChargeFraudScanResponse) {
+    option (google.api.http) = {
+      post: "/v1/charge/{charge_id}/fraudscan"
+      body: "*"
+    };
+  }
+
+  rpc MethodUnlock (MethodUnlockRequest) returns (MethodUnlockResponse) {
+    option (google.api.http) = {
+      put: "/v1/method/unlock/{token}"
+      body: "*"
+    };
+  }
+
+  rpc MethodUpdate (MethodUpdateRequest) returns (MethodUpdateResponse) {
+    option (google.api.http) = {
+      put: "/v1/method/{token}"
+      body: "*"
+    };
+  }
+
+  rpc MethodVerify (MethodVerifyRequest) returns (MethodVerifyResponse) {
+    option (google.api.http) = {
+      put: "/v1/method/{token}/verify"
+      body: "*"
+    };
+  }
+
+  rpc MethodAvailableUpdateSchemas (google.protobuf.Empty) returns (SupportedMethodUpdateTypes) {
+    option (google.api.http) = {
+      get: "/v1/method/available-update-schemas"
+    };
+  }
+
+  rpc TransportKeyRetrieve (google.protobuf.Empty) returns (TransportKeyRetrieveResponse) {
+    option (google.api.http) = {
+      get: "/v1/method/transport-key"
+    };
+  }
+
+  rpc MethodTokenize (MethodTokenizeRequest) returns (MethodTokenizeResponse) {
+    option (google.api.http) = {
+      post: "/v1/method/tokenize"
+      body: "*"
+    };
+  }
+}
+
+message StringTransport {
+  string value = 1;
+}
+
+message ConfigurationListRequest {
+  string kind = 1;
+}
+
+message ConfigurationListResponse {
+  repeated ConfigurationListItem items = 1;
+}
+
+message ConfigurationListItem {
+  string kind = 1;
+  string id = 2;
+  string description = 3;
+  bool disabled = 4;
+}
+
+message ConfigurationGetRequest {
+  string kind = 1;
+  string id = 2;
+}
+
+message ConfigurationGetResponse {
+  string ConfigurationItem = 1;
+}
+
+message ChargeAuthorizeRequest {
+  string charge_id = 1;
+}
+
+message ChargeAuthorizeResponse {
+  chtype.Transaction transaction = 1;
+}
+
+message ChargeCaptureRequest {
+  string charge_id = 1;
+  chtype.Amount amount = 2;
+}
+message ChargeCaptureResponse {
+  bool acknowledged = 1;
+  string process_id = 2;
+}
+
+message ChargeRefundTransaction {
+  string SourceTransactionId = 1;
+  chtype.Amount amount = 2;
+  string payment_method_token = 3;
+}
+
+message ChargeRefundRequest {
+  string charge_id = 1;
+  chtype.Amount amount = 2;
+  chtype.Reason reason = 3;
+  repeated ChargeRefundTransaction transactions = 4;
+}
+
+message ChargeRefundResponse {
+  bool acknowledged = 1;
+  string process_id = 2;
+}
+
+message ChargeCancelRequest {
+  string charge_id = 1;
+  chtype.Reason reason = 2;
+}
+
+message ChargeCancelResponse {
+  bool cancel_success = 1;
+  string cancel_result = 2;
+}
+
+message ChargeFraudScanRequest {
+  string charge_id = 1;
+  map<string, string> additional_data = 2;
+}
+
+message ChargeFraudScanResponse {
+  repeated chtype.FraudResult results = 1;
+}
+
+message ChargeCreateRequest {
+  string merchant_reference = 1;
+  chtype.Amount amount = 2;
+  repeated string PaymentMethodIds = 3;
+  google.protobuf.Timestamp expiry_time = 4;
+  chtype.ContractType contract_type = 5;
+  chtype.ChargeEnvironment environment = 6;
+  chtype.ChargeMeta charge_meta = 7;
+}
+
+message ChargeCreateResponse {
+  string charge_id = 1;
+}
+
+message ChargeModifyRequest {
+  string charge_id = 1;
+  chtype.Amount amount = 2;
+  repeated string PaymentMethodIds = 3;
+  google.protobuf.Timestamp expiry_time = 4;
+  chtype.ChargeMeta charge_meta = 5;
+  chtype.ChargeMetaType charge_meta_type = 6;
+}
+
+message ChargeModifyResponse {
+  bool success = 1;
+}
+
+message MethodUpdateRequest {
+  string token = 1;
+  chtype.PaymentMethod payment_method_updates = 3;
+}
+
+message MethodUpdateResponse {
+  bool acknowledged = 1;
+  chtype.PaymentMethodInfo info = 2;
+}
+
+message MethodUnlockRequest {
+  string token = 1;
+}
+
+message MethodUnlockResponse {
+  bool acknowledged = 1;
+}
+
+message MethodVerifyRequest{
+  string token = 1;
+  chtype.Amount amount = 2;
+  string connector_id = 3;
+  string charge_id = 4;
+}
+
+message MethodVerifyResponse{
+  bool verified = 1;
+  bool authed = 2;
+  chtype.PaymentMethodInfo info = 3;
+  chtype.Transaction transaction = 4;
+}
+
+message SupportedMethodUpdateTypes {
+  chtype.PaymentMethodSchemaCard card = 1;
+}
+
+message TransportKeyRetrieveResponse{
+  bool success = 1;
+  string transport_key_id = 2;
+  bytes public_key = 3;
+}
+
+message MethodTokenizeRequest {
+  chtype.CountryCode data_location = 1;
+  chtype.PaymentMethod method = 2;
+  string display_name = 3;
+  repeated chtype.PaymentMethodVerificationItem payment_method_verification = 4;
+  map<string, string> references = 5;
+  repeated chtype.Label labels = 6;
+  string verify_charge_id = 7;
+  map<string, string> additional_data = 8;
+  chtype.ChargeMeta charge_meta = 9;
+}
+
+message MethodTokenizeResponse {
+  bool success = 1;
+  string token = 2;
+  chtype.PaymentMethodInfo info = 3;
+  map<string, string> additional_data = 4;
+  string customer_message = 5;
+  string merchant_message = 6;
+}
+
+message ConnectionValidateRequest {
+  string kind = 1;
+  string id = 2;
+}
+
+message ConnectionConfirmRequest {
+  string request_id = 1;
+  string verification_key = 2;
+}
+
+message ConnectionValidateResponse {
+  string request_id = 1;
+  string verification_key = 2;
+  chtype.ResponseDetail response = 3;
+}
+
+message ConfigurationApplyRequest {
+  bytes data = 1;
+}
+
+message ConfigurationApplyResponse {
+  bool success = 1;
+  string message = 2;
+  bytes result = 3;
+}
+
+message ConfigurationDeleteRequest {
+  string kind = 1;
+  string id = 2;
+}
+
+message ConfigurationDeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message SchedulerOnDemandRequest {
+  string scheduler_id = 1;
+}
+
+message SchedulerOnDemandResponse {
+  bool triggered = 1;
+  string message = 2;
+}
+
+message SchedulerTriggerResponse {
+  bool triggered = 1;
+  string message = 2;
+}

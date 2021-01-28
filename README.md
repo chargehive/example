@@ -29,6 +29,20 @@ or all as a single command:
 
     PAUTH_CDN="https://cdn.paymentauth.me:8823" PAUTH_PLACEMENT_TOKEN="CHANGE-ME" PAUTH_PROJECT_ID="CHANGE-ME" php -S 127.0.0.1:9180 -t ./src
 
+### SSL
+
+Create a public/private key pair in pem format and store in the `/cert` direc tory.
+Configure those files in either of the two default configs for SSL tunneling:
+
+- Local-Ingress (https://github.com/cubex/local-ingress)
+  
+  Configure `local-ingress.yaml` and then run ` local-ingress -c ./local-ingress.yaml `
+
+- Stunnel (https://www.stunnel.org/)
+  
+  Configure `stunnel.conf` and then run ` stunnel stunnel.conf `
+
+
 ### Troubleshooting
 
 - If chargehive loads but `ChargeHive.onInit.then(function (event){})` is never fired, check that the `PAUTH_CDN` is set correctly. (
