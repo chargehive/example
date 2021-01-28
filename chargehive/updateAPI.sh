@@ -9,7 +9,7 @@ protoc -I/usr/local/include -I. \
   -I$GOPATH/src/github.com/chargehive/proto \
   -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
   -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway \
-  --gogo_out=plugins=grpc: .\
+  --gogo_out=plugins=grpc:.\
   api.proto
 
 echo "Updated!"
