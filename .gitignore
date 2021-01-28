@@ -1,6 +1,5 @@
-/launch.env
-/launch-local.sh
 /stunnel.pem
 /cert/
 !/cert/example.com.pem
 !/cert/example.com-key.pem
+config.yaml

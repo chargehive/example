@@ -1,7 +1,0 @@
-listenAddress: "0.0.0.0:443"
-gzip: true
-tls: true
-hostMap:
-  "example.com": "9180"
-certFile: ./cert/example.com.pem
-keyFile: ./cert/example.com-key.pem
