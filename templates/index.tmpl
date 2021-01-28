@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="public/demo.css">
   <!-- START CHARGEHIVE SCRIPT -->
-  <link rel="stylesheet" href="https://cdn.paymentauth.com/merchant/latest/v1/css/default.css">
+  <link rel="stylesheet" href="{{ .cdn }}/merchant/latest/v1/css/default.css">
   <title>Checkout</title>
 </head>
 <body>
@@ -122,10 +122,91 @@
   </div>
 </div>
 <iframe src="https://paymentauth.com/chargehive/card-numbers" class="chcards"></iframe>
-<div id="card-templates"></div>
+<div id="card-templates">
+  <table>
+    <tr>
+      <th colspan="4" class="provider">Paysafe</th>
+    </tr>
+    <tr>
+      <th>Result</th>
+      <th>Visa</th>
+      <th>Mastercard</th>
+      <th>American Express</th>
+    </tr>
+    <tr>
+      <td>Success</td>
+      <td class="test-card-number">4037<span class="cs"></span>1122<span class="cs"></span>3300<span class="cs"></span>0001</td>
+      <td class="test-card-number">5100<span class="cs"></span>4000<span class="cs"></span>0000<span class="cs"></span>0000</td>
+      <td class="test-card-number">3701<span class="cs"></span>2345<span class="cs"></span>6789<span class="cs"></span>017</td>
+    </tr>
+    <tr>
+      <td>3ds2 Identify</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007</td>
+    </tr>
+    <tr>
+      <td>3ds2 Identify & Fail</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1067</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1047</td>
+      <td class="test-card-number">-</td>
+    </tr>
+    <tr>
+      <td>3ds2 Identify & Challenge</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091</td>
+      <td class="test-card-number"></td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098</td>
+    </tr>
+    <tr>
+      <td>3ds2 Identify & Challenge & Fail</td>
+      <td class="test-card-number">-</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1104</td>
+      <td class="test-card-number">-</td>
+    </tr>
+    <tr>
+      <td>3ds1 Challenge</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0002</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0007</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0003<span class="cs"></span>961</td>
+    </tr>
+    <tr>
+      <th colspan="4" class="provider">Braintree (Expiry: 01/20**)</th>
+    </tr>
+    <tr>
+      <th>Result</th>
+      <th>Visa</th>
+      <th>Mastercard</th>
+      <th>American Express</th>
+    </tr>
+    <tr>
+      <td>Success</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007</td>
+    </tr>
+    <tr>
+      <td>Reject</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1018</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1013</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>015</td>
+    </tr>
+    <tr>
+      <td>Bypass</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1083</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1088</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>080</td>
+    </tr>
+    <tr>
+      <td>3ds2 Success</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1096</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098</td>
+    </tr>
+  </table>
+</div>
 
 <!-- START CHARGEHIVE SCRIPT -->
-<script src="https://cdn.paymentauth.com/merchant/latest/v1/js/chargehive.min.js"></script>
+<script src="{{ .cdn }}/merchant/latest/v1/js/chargehive.min.js"></script>
 <script>
   ChargeHive.initialize(
     '{{ .placementToken }}', // your placement token
@@ -203,7 +284,7 @@
       });
 
     // your merchant reference
-    ChargeHive.prepareCharge('YOUR_REFERENCE');
+    ChargeHive.prepareCharge('{{ getRandString }}');
 
     /* customer info */
     ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', email: 'test@example.com'});

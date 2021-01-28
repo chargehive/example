@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	webserver(config)
+	webserver(&config)
 }
 
 func init() {
