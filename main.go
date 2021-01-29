@@ -34,36 +34,3 @@ func init() {
 
 	log.Printf("Using config %+v\n", config)
 }
-
-//
-// func testtt() {
-// 	var conn *grpc.ClientConn
-// 	conn, err := grpc.Dial(config.ApiHost, grpc.WithInsecure())
-// 	if err != nil {
-// 		log.Fatalf("did not connect: %s", err)
-// 	}
-// 	defer conn.Close()
-// 	c := ch.NewChargeHiveClient(conn)
-//
-// 	// ping
-// 	response, err := c.Ping(context.Background(), &ch.StringTransport{Value: "dick"})
-// 	if err != nil {
-// 		log.Fatalf("Error when calling SayHello: %s", err)
-// 	}
-// 	log.Printf("Response from server: %s", response.Value)
-//
-// 	amt := chtype.Amount{
-// 		Units:                5,
-// 		Currency:             "USD",
-// 		XXX_NoUnkeyedLiteral: struct{}{},
-// 		XXX_unrecognized:     nil,
-// 		XXX_sizecache:        0,
-// 	}
-// 	// connection validation
-// 	cvReq := ch.ChargeCaptureRequest{ChargeId: "XX:06ff00ec-60ba-11eb-80c0-acbc32c65a39:1", Amount: &amt}
-// 	cvResp, err := c.ChargeCapture(context.Background(), &cvReq)
-// 	if err != nil {
-// 		log.Fatalf("Error when calling SayHello: %s", err)
-// 	}
-// 	log.Printf("Response from server: %b", &cvResp.Acknowledged)
-// }
