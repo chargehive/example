@@ -8,7 +8,7 @@
   <title>Checkout</title>
 </head>
 <body>
-<p>Use this checkout page to test functionality of the checkout process using 3ds 2.0</p>
+<p id="TitleLine">Use this checkout page to test functionality of the checkout process using 3ds 2.0 </p>
 <div class="row">
   <div class="col-75">
     <div class="container">
@@ -120,6 +120,15 @@
       <p><a href="#" onclick="addToCart('Red Thingy',5.70)">Red Thingy</a> <span class="price">¤5.70</span></p>
     </div>
   </div>
+  <div class="col-25">
+    <!--CHARGEHIVE API CALLS-->
+    <div class="container">
+      <h4>Chargehive API Calls <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h4>
+      <p><a href="#" onclick="chargeCancel('Blue Widget',9.99)">Cancel</a> <span class="price">¤9.99</span></p>
+      <p><a href="#" onclick="chargeCapture('Red Widget',12.99)">Capture</a> <span class="price">¤12.99</span></p>
+      <p><a href="#" onclick="chargeRefund('Blue Thingy',7.50)">Refund</a> <span class="price">¤7.50</span></p>
+    </div>
+  </div>
 </div>
 <iframe src="https://paymentauth.com/chargehive/card-numbers" class="chcards"></iframe>
 <div id="card-templates">
@@ -135,39 +144,53 @@
     </tr>
     <tr>
       <td>Success</td>
-      <td class="test-card-number">4037<span class="cs"></span>1122<span class="cs"></span>3300<span class="cs"></span>0001</td>
-      <td class="test-card-number">5100<span class="cs"></span>4000<span class="cs"></span>0000<span class="cs"></span>0000</td>
-      <td class="test-card-number">3701<span class="cs"></span>2345<span class="cs"></span>6789<span class="cs"></span>017</td>
+      <td class="test-card-number">4037<span class="cs"></span>1122<span class="cs"></span>3300<span class="cs"></span>0001
+      </td>
+      <td class="test-card-number">5100<span class="cs"></span>4000<span class="cs"></span>0000<span class="cs"></span>0000
+      </td>
+      <td class="test-card-number">3701<span class="cs"></span>2345<span class="cs"></span>6789<span class="cs"></span>017
+      </td>
     </tr>
     <tr>
       <td>3ds2 Identify</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007
+      </td>
     </tr>
     <tr>
       <td>3ds2 Identify & Fail</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1067</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1047</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1067
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1047
+      </td>
       <td class="test-card-number">-</td>
     </tr>
     <tr>
       <td>3ds2 Identify & Challenge</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091
+      </td>
       <td class="test-card-number"></td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098</td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098
+      </td>
     </tr>
     <tr>
       <td>3ds2 Identify & Challenge & Fail</td>
       <td class="test-card-number">-</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1104</td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1104
+      </td>
       <td class="test-card-number">-</td>
     </tr>
     <tr>
       <td>3ds1 Challenge</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0002</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0007</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0003<span class="cs"></span>961</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0002
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>0007
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0003<span class="cs"></span>961
+      </td>
     </tr>
     <tr>
       <th colspan="4" class="provider">Braintree (Expiry: 01/20**)</th>
@@ -180,30 +203,47 @@
     </tr>
     <tr>
       <td>Success</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1000
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1005
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>007
+      </td>
     </tr>
     <tr>
       <td>Reject</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1018</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1013</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>015</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1018
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1013
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>015
+      </td>
     </tr>
     <tr>
       <td>Bypass</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1083</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1088</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>080</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1083
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1088
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>080
+      </td>
     </tr>
     <tr>
       <td>3ds2 Success</td>
-      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091</td>
-      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1096</td>
-      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098</td>
+      <td class="test-card-number">4000<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1091
+      </td>
+      <td class="test-card-number">5200<span class="cs"></span>0000<span class="cs"></span>0000<span class="cs"></span>1096
+      </td>
+      <td class="test-card-number">3400<span class="cs"></span>0000<span class="cs"></span>0001<span class="cs"></span>098
+      </td>
     </tr>
   </table>
 </div>
+
+<script>
+  let hst = window.location.hostname;
+  document.getElementById('TitleLine').innerHTML += '(<a href="http://' + hst + ':{{ .httpPort }}">HTTP</a>/<a href="https://' + hst + ':{{ .httpsPort }}">HTTPS</a>)';
+</script>
 
 <!-- START CHARGEHIVE SCRIPT -->
 <script src="{{ .cdn }}/merchant/latest/v1/js/chargehive.min.js"></script>
@@ -211,7 +251,7 @@
   ChargeHive.initialize(
     '{{ .placementToken }}', // your placement token
     '{{ .projectID }}', // your project id
-    {"currency": "{{ .currency }}", "country": "{{ .country }}"}
+    {"currency": "{{ .currency }}", "country": "{{ .country }}"} //additional options
   );
 </script>
 <!-- END CHARGEHIVE SCRIPT -->

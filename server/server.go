@@ -1,9 +1,11 @@
-package main
+package server
 
 import (
 	"crypto/md5"
 	"fmt"
 	"github.com/chargehive/example/chargehive"
+	"github.com/chargehive/example/client"
+	"github.com/chargehive/example/config"
 	"github.com/chargehive/proto/golang/chargehive/chtype"
 	"github.com/gin-gonic/gin"
 	"html/template"
@@ -11,10 +13,11 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
-func webserver(cfg *conf) {
+func Start(cfg *config.Config) {
 	gin.SetMode(gin.TestMode)
 
 	tmplH := gin.H{
@@ -23,10 +26,12 @@ func webserver(cfg *conf) {
 		"currency":       cfg.Currency,
 		"country":        cfg.Country,
 		"cdn":            cfg.PaymentAuthCdn,
+		"httpPort":       strings.SplitAfter(cfg.HttpListen, ":")[1],
+		"httpsPort":      strings.SplitAfter(cfg.HttpsListen, ":")[1],
 	}
 
 	// https server
-	if !cfg.isEmptyVal(cfg.HttpsKeyFilename) && !cfg.isEmptyVal(cfg.HttpsCertFilename) && !cfg.isEmptyVal(cfg.HttpsListen) {
+	if !config.IsEmptyVal(cfg.HttpsKeyFilename) && !config.IsEmptyVal(cfg.HttpsCertFilename) && !config.IsEmptyVal(cfg.HttpsListen) {
 		httpsRouter := gin.Default()
 		applyRoutes(httpsRouter, tmplH)
 		go func() {
@@ -39,7 +44,7 @@ func webserver(cfg *conf) {
 	}
 
 	// webhook server - always accepts all messages
-	if !cfg.isEmptyVal(cfg.WebhookListen) {
+	if !config.IsEmptyVal(cfg.WebhookListen) {
 		webhookRouter := gin.Default()
 		webhookRouter.NoRoute(func(c *gin.Context) {
 			if rData, err := ioutil.ReadAll(c.Request.Body); err != nil {
@@ -74,10 +79,10 @@ func applyRoutes(router *gin.Engine, h map[string]interface{}) {
 	router.GET("/", func(c *gin.Context) { c.HTML(http.StatusOK, "index.tmpl", h) })
 
 	router.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", api.Ping("message"))
+		c.String(http.StatusOK, "%s", client.Get().Ping("message"))
 	})
 	router.GET("/chargeCancel", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", api.ChargeCancel("chargeid", chtype.Reason{
+		c.String(http.StatusOK, "%s", client.Get().ChargeCancel("chargeid", chtype.Reason{
 			Description:      "Cancel reason",
 			ReasonType:       chtype.REASON_GENERIC,
 			RequestorComment: "",
@@ -86,7 +91,7 @@ func applyRoutes(router *gin.Engine, h map[string]interface{}) {
 	})
 
 	router.GET("/chargeCapture", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", api.ChargeCapture("chargeid", "USD", 5))
+		c.String(http.StatusOK, "%s", client.Get().ChargeCapture("chargeid", "USD", 5))
 	})
 
 	router.GET("/chargeRefund", func(c *gin.Context) {
@@ -97,7 +102,7 @@ func applyRoutes(router *gin.Engine, h map[string]interface{}) {
 			RequestedBy:      chtype.ACTOR_TYPE_CHARGEHIVE,
 		}
 		var txns []*chargehive.ChargeRefundTransaction
-		c.String(http.StatusOK, "%s", api.ChargeRefund("chargeid", "USD", 5, reason, txns))
+		c.String(http.StatusOK, "%s", client.Get().ChargeRefund("chargeid", "USD", 5, reason, txns))
 	})
 
 }
