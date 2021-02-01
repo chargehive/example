@@ -8,8 +8,6 @@ import (
 	"github.com/chargehive/example/config"
 	"github.com/chargehive/proto/golang/chargehive/chtype"
 	"github.com/gin-gonic/gin"
-	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -19,21 +17,20 @@ import (
 
 func Start(cfg *config.Config) {
 	gin.SetMode(gin.TestMode)
-
-	tmplH := gin.H{
-		"placementToken": cfg.PlacementToken,
-		"projectID":      cfg.ProjectId,
-		"currency":       cfg.Currency,
-		"country":        cfg.Country,
-		"cdn":            cfg.PaymentAuthCdn,
-		"httpPort":       strings.SplitAfter(cfg.HttpListen, ":")[1],
-		"httpsPort":      strings.SplitAfter(cfg.HttpsListen, ":")[1],
+	startHttpsServer(cfg)
+	startWebhookServer(cfg)
+	// start http server
+	httpRouter := gin.Default()
+	applyRoutes(httpRouter, cfg)
+	if httpErr := httpRouter.Run(cfg.HttpListen); httpErr != nil {
+		log.Printf("http server failed: %s\n", httpErr)
 	}
+}
 
-	// https server
+func startHttpsServer(cfg *config.Config) {
 	if !config.IsEmptyVal(cfg.HttpsKeyFilename) && !config.IsEmptyVal(cfg.HttpsCertFilename) && !config.IsEmptyVal(cfg.HttpsListen) {
 		httpsRouter := gin.Default()
-		applyRoutes(httpsRouter, tmplH)
+		applyRoutes(httpsRouter, cfg)
 		go func() {
 			if httpsErr := httpsRouter.RunTLS(cfg.HttpsListen, cfg.HttpsCertFilename, cfg.HttpsKeyFilename); httpsErr != nil {
 				log.Printf("https server failed: %s\n", httpsErr)
@@ -42,41 +39,27 @@ func Start(cfg *config.Config) {
 	} else {
 		log.Println("Skipping https server, missing config data")
 	}
-
-	// webhook server - always accepts all messages
-	if !config.IsEmptyVal(cfg.WebhookListen) {
-		webhookRouter := gin.Default()
-		webhookRouter.NoRoute(func(c *gin.Context) {
-			if rData, err := ioutil.ReadAll(c.Request.Body); err != nil {
-				log.Printf("error reading webhook data: %s\n", err.Error())
-			} else {
-				log.Printf("received webhook data: %v", string(rData))
-			}
-			c.String(http.StatusOK, "{\"message\":\"OK\"}")
-		})
-		go func() {
-			if webhookErr := webhookRouter.Run(cfg.WebhookListen); webhookErr != nil {
-				log.Printf("webhook server failed: %s\n", webhookErr)
-			}
-		}()
-	} else {
-		log.Println("Skipping webhook server, missing config data")
-	}
-
-	// http server
-	httpRouter := gin.Default()
-	applyRoutes(httpRouter, tmplH)
-	if httpErr := httpRouter.Run(cfg.HttpListen); httpErr != nil {
-		log.Printf("http server failed: %s\n", httpErr)
-	}
-
 }
 
-func applyRoutes(router *gin.Engine, h map[string]interface{}) {
-	router.StaticFS("/public", http.Dir("./public"))
-	router.SetFuncMap(template.FuncMap{"getRandString": getRandString})
+func applyRoutes(router *gin.Engine, cfg *config.Config) {
+	router.StaticFS("/static", http.Dir("./static"))
+
 	router.LoadHTMLGlob("templates/*")
-	router.GET("/", func(c *gin.Context) { c.HTML(http.StatusOK, "index.tmpl", h) })
+	router.GET("/", func(c *gin.Context) {
+
+		host := strings.Split(c.Request.Host, ":")[0]
+
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"placementToken": cfg.PlacementToken,
+			"projectID":      cfg.ProjectId,
+			"currency":       cfg.Currency,
+			"country":        cfg.Country,
+			"cdn":            cfg.PaymentAuthCdn,
+			"randString":     fmt.Sprintf("%x", md5.Sum([]byte(strconv.FormatInt(time.Now().UnixNano(), 10)))),
+			"httpLink":       fmt.Sprintf("http://%s:%s", host, strings.SplitAfter(cfg.HttpListen, ":")[1]),
+			"httpsLink":      fmt.Sprintf("https://%s:%s", host, strings.SplitAfter(cfg.HttpsListen, ":")[1]),
+		})
+	})
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "%s", client.Get().Ping("message"))
@@ -105,8 +88,4 @@ func applyRoutes(router *gin.Engine, h map[string]interface{}) {
 		c.String(http.StatusOK, "%s", client.Get().ChargeRefund("chargeid", "USD", 5, reason, txns))
 	})
 
-}
-
-func getRandString() string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(strconv.FormatInt(time.Now().UnixNano(), 10))))
 }
