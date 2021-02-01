@@ -7,7 +7,38 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 )
+
+func GetWebhooks(c *gin.Context) {
+	var result []webhookLog
+	q, b := c.GetQuery("from")
+	from, _ := strconv.ParseInt(q, 10, 64)
+	if from == 0 || !b {
+		result = webhookLogs
+	} else {
+		for _, v := range webhookLogs {
+			if v.Received > from {
+				result = append(result, v)
+			}
+		}
+	}
+	jsonResult, _ := json.Marshal(result)
+	c.String(http.StatusOK, "%s", jsonResult)
+}
+
+func ClearWebhooks(c *gin.Context) {
+	webhookLogs = []webhookLog{}
+	c.String(http.StatusOK, "OK")
+}
+
+type webhookLog struct {
+	Received int64
+	Data     []byte
+}
+
+var webhookLogs []webhookLog
 
 func startWebhookServer(cfg *config.Config) {
 	// webhook server - always accepts all messages
@@ -17,9 +48,8 @@ func startWebhookServer(cfg *config.Config) {
 			if rData, err := ioutil.ReadAll(c.Request.Body); err != nil {
 				log.Printf("error reading webhook data: %s\n", err.Error())
 			} else {
-				hook := parseWebhook(rData)
-				Webhooks[hook.Created] = hook
-				log.Printf("Type:%s  -   %s", hook.Type, hook.Data)
+				webhookLogs = append(webhookLogs, webhookLog{Received: time.Now().UnixNano(), Data: rData})
+				log.Printf("Received Webhook: %s\n", string(rData))
 			}
 			c.String(http.StatusOK, "{\"message\":\"OK\"}")
 		})
@@ -31,32 +61,4 @@ func startWebhookServer(cfg *config.Config) {
 	} else {
 		log.Println("Skipping webhook server, missing config data")
 	}
-}
-
-var Webhooks = map[int64]Webhook{}
-
-type Webhook struct {
-	Uuid           string
-	Type           string
-	Data           string
-	JsonData       interface{}
-	Checksum       string
-	Verification   string
-	Created        int64
-	WebhookVersion string
-	ProjectId      string
-}
-
-func parseWebhook(rData []byte) Webhook {
-	var hook Webhook
-	err := json.Unmarshal(rData, &hook)
-	if err != nil {
-		log.Printf("failed to unmarshal webhook: %s", err.Error())
-	}
-
-	err = json.Unmarshal([]byte(hook.Data), &hook.JsonData)
-	if err != nil {
-		log.Printf("failed to unmarshal webhook data: %s", err.Error())
-	}
-	return hook
 }

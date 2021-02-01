@@ -6,86 +6,87 @@ import (
 	"github.com/chargehive/example/chargehive"
 	"github.com/chargehive/example/config"
 	"github.com/chargehive/proto/golang/chargehive/chtype"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"log"
 )
 
-var client Client
+var (
+	chClient *chargehive.ChargeHiveClient
+	conn     *grpc.ClientConn
+	conf     *config.Config
+)
 
 func Init(config *config.Config) {
-	client.conf = config
-}
-
-func Get() *Client {
-	return &client
-}
-
-type Client struct {
-	ctx  context.Context
-	chc  *chargehive.ChargeHiveClient
-	conn *grpc.ClientConn
-	conf *config.Config
+	conf = config
 }
 
 // GetContext returns a context object for given chargehive details
-func (a *Client) getCtx() *context.Context {
-	if a.ctx == nil {
-		ctx := context.Background()
-		a.ctx = metadata.NewOutgoingContext(ctx, metadata.MD{
-			"chive-project-id":   []string{a.conf.ProjectId},
-			"chive-access-token": []string{a.conf.ApiAccessToken},
-		})
-	}
-	return &a.ctx
+func getCtx(ctx context.Context, c *gin.Context) context.Context {
+	requestID := uuid.New().String()
+	ctx = metadata.NewOutgoingContext(ctx, metadata.MD{
+		"chive-project-id":      []string{conf.ProjectId},
+		"chive-access-token":    []string{conf.ApiAccessToken},
+		"chive-remote-address":  []string{c.Request.RemoteAddr},
+		"chive-user-agent":      []string{c.Request.UserAgent()},
+		"chive-transport-agent": []string{"example site"},
+		"chive-request-id":      []string{requestID},
+	})
+	return ctx
 }
 
-func (a *Client) getConn() *grpc.ClientConn {
-	if a.conn == nil {
+func getConn() *grpc.ClientConn {
+	if conn == nil {
 		var err error
-		if a.conn, err = grpc.Dial(a.conf.ApiHost, grpc.WithInsecure()); err != nil {
+		if conn, err = grpc.Dial(conf.ApiHost, grpc.WithInsecure()); err != nil {
 			log.Fatalf("failed to connect to charghive api: %s", err)
 		}
 	}
-	return a.conn
+	return conn
 }
 
-func (a *Client) getChc() *chargehive.ChargeHiveClient {
-	if a.chc == nil {
-		c := chargehive.NewChargeHiveClient(a.getConn())
-		a.chc = &c
+func getChClient() chargehive.ChargeHiveClient {
+	if chClient == nil {
+		c := chargehive.NewChargeHiveClient(getConn())
+		chClient = &c
 	}
-	return a.chc
+	return *chClient
 }
 
-func (a *Client) Ping(input string) string {
-	response, err := (*a.getChc()).Ping(*a.getCtx(), &chargehive.StringTransport{Value: input})
+func Ping(c *gin.Context) string {
+	ctx := getCtx(context.Background(), c)
+	response, err := getChClient().Ping(ctx, &chargehive.StringTransport{Value: "ping"})
 	if err != nil {
 		log.Println(err)
 	}
 	return fmt.Sprintf("%x", response.GetValue())
 }
 
-func (a *Client) ChargeCancel(chargeId string, reason chtype.Reason) string {
-	response, err := (*a.getChc()).ChargeCancel(*a.getCtx(), &chargehive.ChargeCancelRequest{ChargeId: chargeId, Reason: &reason})
+func ChargeCancel(c *gin.Context, chargeId string, reason chtype.Reason) string {
+	ctx := getCtx(context.Background(), c)
+	response, err := getChClient().ChargeCancel(ctx, &chargehive.ChargeCancelRequest{ChargeId: chargeId, Reason: &reason})
 	if err != nil {
 		log.Println(err)
 	}
 	return fmt.Sprintf("Success:%v  Result:%s", response.GetCancelSuccess(), response.GetCancelResult())
 }
 
-func (a *Client) ChargeCapture(chargeId, currency string, units int64) string {
+func ChargeCapture(c *gin.Context, chargeId, currency string, units int64) string {
 	amount := chtype.Amount{Units: units, Currency: currency}
-	response, err := (*a.getChc()).ChargeCapture(*a.getCtx(), &chargehive.ChargeCaptureRequest{ChargeId: chargeId, Amount: &amount})
+	ctx := getCtx(context.Background(), c)
+	response, err := getChClient().ChargeCapture(ctx, &chargehive.ChargeCaptureRequest{ChargeId: chargeId, Amount: &amount})
 	if err != nil {
 		log.Println(err)
 	}
 	return fmt.Sprintf("Acknowledged:%v  ProcessId:%s", response.GetAcknowledged(), response.GetProcessId())
 }
 
-func (a *Client) ChargeRefund(chargeId, currency string, units int64, reason chtype.Reason, txns []*chargehive.ChargeRefundTransaction) string {
+func ChargeRefund(c *gin.Context, chargeId, currency string, units int64, reason chtype.Reason, txns []*chargehive.ChargeRefundTransaction) string {
 	amount := chtype.Amount{Units: units, Currency: currency}
-	response, err := (*a.getChc()).ChargeRefund(*a.getCtx(), &chargehive.ChargeRefundRequest{
+	ctx := getCtx(context.Background(), c)
+	response, err := getChClient().ChargeRefund(ctx, &chargehive.ChargeRefundRequest{
 		ChargeId:     chargeId,
 		Amount:       &amount,
 		Reason:       &reason,

@@ -61,20 +61,41 @@ func applyRoutes(router *gin.Engine, cfg *config.Config) {
 		})
 	})
 
+	router.GET("/webhooks", GetWebhooks)
+	router.DELETE("/webhooks", ClearWebhooks)
+
 	router.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", client.Get().Ping("message"))
+		c.String(http.StatusOK, "%s", client.Ping(c))
 	})
+
+	router.GET("/chargeCapture", func(c *gin.Context) {
+		const (
+			chargeIdStr = "chargeId"
+			currencyStr = "currency"
+			unitsStr    = "units"
+		)
+		chargeId, chargeIdExists := c.GetQuery(chargeIdStr)
+		currency, currencyExists := c.GetQuery(currencyStr)
+		units, unitsExist := c.GetQuery(unitsStr)
+
+		if !chargeIdExists {
+			c.String(http.StatusBadRequest, "missing field: %s", chargeIdStr)
+		} else if !currencyExists {
+			c.String(http.StatusBadRequest, "missing field: %s", currencyStr)
+		} else if unitsInt64, uErr := strconv.ParseInt(units, 10, 64); !unitsExist || uErr != nil {
+			c.String(http.StatusBadRequest, "missing or invalid field: %s", unitsStr)
+		} else {
+			c.String(http.StatusOK, "%s", client.ChargeCapture(c, chargeId, currency, unitsInt64))
+		}
+	})
+
 	router.GET("/chargeCancel", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", client.Get().ChargeCancel("chargeid", chtype.Reason{
+		c.String(http.StatusOK, "%s", client.ChargeCancel(c, "chargeid", chtype.Reason{
 			Description:      "Cancel reason",
 			ReasonType:       chtype.REASON_GENERIC,
 			RequestorComment: "",
 			RequestedBy:      chtype.ACTOR_TYPE_CHARGEHIVE,
 		}))
-	})
-
-	router.GET("/chargeCapture", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", client.Get().ChargeCapture("chargeid", "USD", 5))
 	})
 
 	router.GET("/chargeRefund", func(c *gin.Context) {
@@ -85,7 +106,7 @@ func applyRoutes(router *gin.Engine, cfg *config.Config) {
 			RequestedBy:      chtype.ACTOR_TYPE_CHARGEHIVE,
 		}
 		var txns []*chargehive.ChargeRefundTransaction
-		c.String(http.StatusOK, "%s", client.Get().ChargeRefund("chargeid", "USD", 5, reason, txns))
+		c.String(http.StatusOK, "%s", client.ChargeRefund(c, "chargeid", "USD", 5, reason, txns))
 	})
 
 }

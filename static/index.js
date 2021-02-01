@@ -65,7 +65,7 @@ ChargeHive.onInit.then(function (event) {
     });
 
   // your merchant reference
-  ChargeHive.prepareCharge('{{ getRandString }}');
+  ChargeHive.prepareCharge(randomString("MerchRef_", 12));
 
   /* customer info */
   ChargeHive.setCustomerInfo({firstName: 'Test', lastName: 'Customer', email: 'test@example.com'});
@@ -96,7 +96,7 @@ ChargeHive.addEventListener(
           e.classList.remove('selected');
         }
       });
-    var container = document.querySelector('[capability=' + event.detail.type + '].inputContainer');
+    let container = document.querySelector('[capability=' + event.detail.type + '].inputContainer');
     if(container)
     {
       container.classList.add('selected');
@@ -216,30 +216,34 @@ function doTokenize()
 function setProcessing()
 {
   document.querySelector('.ch-field-placeholder').style.border = '';
-  document.querySelector('#doit').setAttribute('disabled', 'disabled');
-  document.querySelector('#doit').innerText = 'Processing...';
+  document.querySelector('#doIt').setAttribute('disabled', 'disabled');
+  document.querySelector('#doIt').innerText = 'Processing...';
 }
 
 function setNormal()
 {
-  document.querySelector('#doit').removeAttribute('disabled');
-  document.querySelector('#doit').innerText = 'Pay Now';
+  document.querySelector('#doIt').removeAttribute('disabled');
+  document.querySelector('#doIt').innerText = 'Pay Now';
+}
+
+const letters = '0123456789ABCDEF';
+
+function randomString(prefix, chars)
+{
+  for(let i = 0; i < chars; i++)
+  {
+    prefix += letters[Math.floor(Math.random() * 16)];
+  }
+  return prefix
 }
 
 function changeColour()
 {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for(var i = 0; i < 6; i++)
-  {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-
   ChargeHive.setStyle(
     {
       cardNum: {
         default: {
-          color:    color,
+          color:    randomString("#", 6),
           ':hover': {color: 'orange'},
         },
       },
