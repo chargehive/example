@@ -2,7 +2,7 @@
 
 
 #### Client Side
-- Event Log
+- ~~Event Log~~
 - Prepare Charge
 - Update Charge
 - Authorize Charge

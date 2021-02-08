@@ -23,17 +23,13 @@ function hideChOverlay()
   document.getElementsByClassName("overlay")[0].style.display = "none";
 }
 
-let resizeOverlay = function () {
+const resizeObserver = new ResizeObserver(entries => {
   let overlays = document.getElementsByClassName("overlay");
   for(let ol of overlays)
   {
     ol.style.width = (ol.parentNode.clientWidth - 1) + "px";
     ol.style.height = (ol.parentNode.clientHeight - 1) + "px";
   }
-};
-
-const resizeObserver = new ResizeObserver(entries => {
-  resizeOverlay();
 });
 resizeObserver.observe(document.getElementById("paymentTabContent"));
 
@@ -49,4 +45,24 @@ function copyOnClick(e)
   textarea.setSelectionRange(0, 99999);
   document.execCommand("copy");
   document.body.removeChild(textarea);
+}
+
+let counter = 0;
+
+function clientEventAdd(event)
+{
+  counter++;
+  let tbodyRef = document.getElementById('clientEventsTable').getElementsByTagName('tbody')[0];
+  let newRow = tbodyRef.insertRow();
+  newRow.insertCell().appendChild(document.createTextNode(counter));
+  newRow.insertCell().appendChild(document.createTextNode(Math.floor(event.timeStamp / 100) / 10))
+  newRow.insertCell().appendChild(document.createTextNode(event.type))
+  let detail = (event.detail === Object(event.detail)) ? JSON.stringify(event.detail) : event.detail;
+  newRow.insertCell().appendChild(document.createTextNode(detail));
+  document.getElementById("clientRightTabContentEvents").scrollTop = newRow.offsetTop;
+}
+
+function clientEventClear()
+{
+
 }

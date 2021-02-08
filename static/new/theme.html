@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary border-bottom" id="navbar1">
   <div class="container-fluid">
     <div class="navbar-brand">
-      <a href="//chargehive.com"><img src="img/chargehive-logo-light.png"></a>
+      <a href="//chargehive.com"><img src="img/chargehive-logo-light.png" alt="chargehive"></a>
     </div>
     <div class="navbar-nav">
       <div class="input-group">
@@ -53,7 +53,11 @@
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="order-items-tab" data-bs-toggle="tab" href="#order-items" role="tab"
                  aria-controls="order-items"
-                 aria-selected="false">Order Items</a>
+                 aria-selected="false">Order</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="customer-tab-label" data-bs-toggle="tab" href="#customer-tab-content" role="tab"
+                 aria-controls="customer-tab-content" aria-selected="false">Customer</a>
             </li>
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="options-tab" data-bs-toggle="tab" href="#options" role="tab"
@@ -62,7 +66,7 @@
             </li>
           </ul>
           <div class="tab-content bg-white p-3 border-left border-right border-bottom" id="paymentTabContent">
-            <!-- OVERLAY -->
+            <!-- LOADING OVERLAY AND SPINNER -->
             <div class="overlay" onclick="hideChOverlay()">
               <div class="w-100 d-flex justify-content-center align-items-center px-3">
                 <div id="ch-failure-alert" class="alert alert-danger" role="alert" style="display: none;">
@@ -153,110 +157,425 @@
                 </div>
                 <div class="col-md-6">
                   <label for="ccNum">Name On Card</label>
-                  <span id="ccName" data-chargehive="cardName" class="ch-field-placeholder" style="height: 32px"></span>
+                  <span id="ccName" data-chargehive="cardName" class="ch-field-placeholder d-block"
+                        style="height: 32px"></span>
                 </div>
                 <div class="col-md-6">
                   <label for="ccNum">Card Number</label>
-                  <span id="ccNum" data-chargehive="cardNum" class="ch-field-placeholder" style="height: 32px"></span>
+                  <span id="ccNum" data-chargehive="cardNum" class="ch-field-placeholder d-block"
+                        style="height: 32px"></span>
                 </div>
                 <div class="col-md-6">
                   <label for="ccDate">Expiry Date</label>
-                  <span id="ccDate" data-chargehive="cardExp" class="ch-field-placeholder"
+                  <span id="ccDate" data-chargehive="cardExp" class="ch-field-placeholder d-block"
                         style="height: 32px"></span>
                 </div>
                 <div class="col-md-6">
                   <label for="ccCvv">CVV</label>
-                  <span id="ccCvv" data-chargehive="cardCvv" class="ch-field-placeholder" style="height: 32px"></span>
+                  <span id="ccCvv" data-chargehive="cardCvv" class="ch-field-placeholder d-block"
+                        style="height: 32px"></span>
                 </div>
               </div>
               <!-- PAYMENT CONTROLS -->
               <form>
-                <div class="row py-2 gap-2 d-grid" id="paymentControlsRow">
-                  <div class="col-md-4 d-grid">
-                    <input class="btn btn-success btn-sm" type="submit" value="Authorize">
+                <div class="row" id="paymentControlsRow">
+                  <div class="col-md-4 mb-2">
+                    <input class="btn btn-success btn-sm btn-block" type="submit" value="Authorize">
                   </div>
-                  <div class="col-md-4 d-grid">
-                    <input class="btn btn-success btn-sm" type="submit" value="Tokenize">
+                  <div class="col-md-4 mb-2">
+                    <input class="btn btn-success btn-sm btn-block" type="submit" value="Tokenize">
                   </div>
-                  <div class="col-md-4 d-grid">
-                    <input class="btn btn-success btn-sm" type="submit" value="Verify">
+                  <div class="col-md-4 mb-2">
+                    <input class="btn btn-success btn-sm btn-block" type="submit" value="Verify">
                   </div>
                 </div>
               </form>
             </div>
-            <!-- ORDER-ITEMS TAB -->
+            <!-- ORDER TAB -->
             <div class="tab-pane fade pt-2" id="order-items" role="tabpanel" aria-labelledby="order-items-tab">
-
+              <!-- CART -->
               <div class="row">
-                <div class="col-md-7">
-                  <div class="row">
-                    <div class="col-12">
-                      <label for="list-cart">Cart Contents</label>
-                      <div id="list-cart" class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                          Item 1
-                          <span class="badge bg-secondary float-end">$14</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                          Item 2
-                          <span class="badge bg-secondary float-end">$14</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                          Item 3
-                          <span class="badge bg-secondary float-end">$14</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                          Item 4
-                          <span class="badge bg-secondary float-end">$14</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="d-grid gap-2 d-md-block">
-                      <button class="btn btn-primary" type="button">Add</button>
-                      <button class="btn btn-primary" type="button">Clear</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-5">
-                  <label for="list-dummy">Click to add example:</label>
-                  <div id="list-dummy" class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action">
-                      Red Thingy
-                      <span class="badge bg-secondary float-end">$1.22</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      Green Thingy
-                      <span class="badge bg-secondary float-end">$35.22</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      White Thingy
-                      <span class="badge bg-secondary float-end">$10</span>
-                    </a>
-                  </div>
-                </div>
               </div>
 
               <!-- ADD ORDER ITEM -->
-              <div class="row">
-                <form class="row g-3">
-                  <div class="col-md-6">
-                    <label for="inputEmail4" class="form-label">Merchant Reference</label>
-                    <input type="email" class="form-control form-control-sm" id="inputEmail4">
+              <div class="row g-2 mb-2">
+                <div class="col-lg-12">
+                  <h4>Add Order Item</h4>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-subscriptionId-label">SubscriptionId</span>
+                    <input type="text" class="form-control" aria-label="Subscription ID"
+                           aria-describedby="order-item-subscriptionId-label">
                   </div>
-                </form>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-renewalNumber-label">RenewalNumber</span>
+                    <input type="number" class="form-control" aria-label="Renewal Number"
+                           aria-describedby="order-item-renewalNumber-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-duration-label">Duration</span>
+                    <input type="number" class="form-control" aria-label="Duration"
+                           aria-describedby="order-item-duration-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-startDate-label">StartDate</span>
+                    <input type="number" class="form-control" aria-label="StartDate"
+                           aria-describedby="order-item-startDate-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-endDate-label">EndDate</span>
+                    <input type="number" class="form-control" aria-label="EndDate"
+                           aria-describedby="order-item-endDate-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-productType-label">ProductType</span>
+                    <select class="form-select form-select-sm" aria-label="ProductType"
+                            aria-describedby="order-item-productType-label">
+                      <option value="1">Product</option>
+                      <option value="2">Service</option>
+                      <option value="3" selected>Subscription</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-skuType-label">SKU Type</span>
+                    <select class="form-select form-select-sm" aria-label="SKU Type"
+                            aria-describedby="order-item-skuType-label">
+                      <option value="1" selected>Primary</option>
+                      <option value="2">Addon</option>
+                      <option value="3">Upsell</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-deliveryType-label">DeliveryType</span>
+                    <select class="form-select form-select-sm" aria-label="DeliveryType"
+                            aria-describedby="order-item-deliveryType-label">
+                      <option value="1" selected>None</option>
+                      <option value="2">Physical</option>
+                      <option value="3">Virtual</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-qty-label">Qty</span>
+                    <input type="number" class="form-control" aria-label="Qty" aria-describedby="order-item-qty-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-unitPrice-label">UnitPrice</span>
+                    <input type="number" class="form-control" aria-label="UnitPrice"
+                           aria-describedby="order-item-unitPrice-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-taxAmount-label">Tax</span>
+                    <input type="number" class="form-control" aria-label="Tax"
+                           aria-describedby="order-item-taxAmount-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-discount-label">Discount</span>
+                    <input type="number" class="form-control" aria-label="Discount"
+                           aria-describedby="order-item-discount-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-name-label">Name</span>
+                    <input type="text" class="form-control" aria-label="Name" aria-describedby="order-item-name-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-description-label">Description</span>
+                    <input type="text" class="form-control" aria-label="Description"
+                           aria-describedby="order-item-description-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-productCode-label">ProductCode</span>
+                    <input type="text" class="form-control" aria-label="ProductCode"
+                           aria-describedby="order-item-productCode-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-skuCode-label">SKU Code</span>
+                    <input type="text" class="form-control" aria-label="SKU Code"
+                           aria-describedby="order-item-skuCode-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-termUnits-label">TermUnits</span>
+                    <input type="text" class="form-control" aria-label="TermUnits"
+                           aria-describedby="order-item-termUnits-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="order-item-termType-label">TermType</span>
+                    <select class="form-select form-select-sm" aria-label="TermType"
+                            aria-describedby="order-item-termType-label">
+                      <option value="1">OneTime</option>
+                      <option value="3">Minute</option>
+                      <option value="4">Day</option>
+                      <option value="5">Week</option>
+                      <option value="6" selected>Month</option>
+                      <option value="7">Year</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row my-2">
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-sm btn-outline-success btn-block">add to cart</button>
+                </div>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-sm btn-outline-danger btn-block">clear form</button>
+                </div>
+              </div>
+            </div>
+            <!-- CUSTOMER TAB -->
+            <div class="tab-pane fade pt-2" id="customer-tab-content" role="tabpanel"
+                 aria-labelledby="customer-tab-label">
+              <div class="row g-2 mb-4">
+                <div class="col-lg-3">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="customer-title-label">Title</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="customer-title-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-firstname-label">Firstname</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-firstname-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-lastname-label">Lastname</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-lastname-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-fullname-label">Full Name</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-fullname-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-email-label">Email</span>
+                    <input type="email" class="form-control" aria-label="FAO" aria-describedby="billing-email-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-phone-label">Phone</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-phone-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-language-label">Language</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-language-label">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-success">apply</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
+                </div>
+              </div>
+              <div class="row g-2 mb-4">
+                <h4 class="col-md-12">Billing Address</h4>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-fao-label">FAO</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-fao-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-companyName-label">Company</span>
+                    <input type="text" class="form-control" aria-label="FAO"
+                           aria-describedby="billing-companyName-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-address1-label">Address 1</span>
+                    <input type="text" class="form-control" aria-label="Address1"
+                           aria-describedby="billing-address1-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-address2-label">Address 2</span>
+                    <input type="text" class="form-control" aria-label="Address2"
+                           aria-describedby="billing-address2-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-address3-label">Address 3</span>
+                    <input type="text" class="form-control" aria-label="Address3"
+                           aria-describedby="billing-address3-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-city-label">City</span>
+                    <input type="text" class="form-control" aria-label="City"
+                           aria-describedby="billing-city-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-county-label">County</span>
+                    <input type="text" class="form-control" aria-label="County"
+                           aria-describedby="billing-county-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-country-label">Country</span>
+                    <input type="text" class="form-control" aria-label="Country"
+                           aria-describedby="billing-country-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="billing-postal-label">Postal</span>
+                    <input type="text" class="form-control" aria-label="Postal"
+                           aria-describedby="billing-postal-label">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-success">apply</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
+                  <button type="button" class="btn btn-sm btn-outline-info">copy to shipping</button>
+                </div>
+              </div>
+              <div class="row g-2 mb-4">
+                <h4 class="col-md-12">Shipping Address</h4>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-fao-label">FAO</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="shipping-fao-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-companyName-label">Company</span>
+                    <input type="text" class="form-control" aria-label="FAO"
+                           aria-describedby="shipping-companyName-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-address1-label">Address 1</span>
+                    <input type="text" class="form-control" aria-label="Address1"
+                           aria-describedby="shipping-address1-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-address2-label">Address 2</span>
+                    <input type="text" class="form-control" aria-label="Address2"
+                           aria-describedby="shipping-address2-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-address3-label">Address 3</span>
+                    <input type="text" class="form-control" aria-label="Address3"
+                           aria-describedby="shipping-address3-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-city-label">City</span>
+                    <input type="text" class="form-control" aria-label="City"
+                           aria-describedby="shipping-city-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-county-label">County</span>
+                    <input type="text" class="form-control" aria-label="County"
+                           aria-describedby="shipping-county-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-country-label">Country</span>
+                    <input type="text" class="form-control" aria-label="Country"
+                           aria-describedby="shipping-country-label">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="shipping-postal-label">Postal</span>
+                    <input type="text" class="form-control" aria-label="Postal"
+                           aria-describedby="shipping-postal-label">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-success">apply</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
+                  <button type="button" class="btn btn-sm btn-outline-info">copy to billing</button>
+                </div>
               </div>
             </div>
             <!-- OPTIONS TAB -->
             <div class="tab-pane fade pt-2" id="options" role="tabpanel" aria-labelledby="options-tab">
-              <div class="col-md-12">
-                <form class="row g-3">
-                  <div class="col-md-6">
-                    <label for="inputEmail4" class="form-label">Merchant Reference</label>
-                    <input type="email" class="form-control form-control-sm" id="sdfsdf">
-                  </div>
-                </form>
+              <div class="row">
+                options
               </div>
             </div>
           </div>
@@ -278,55 +597,12 @@
                  aria-selected="false">Events</a>
             </li>
           </ul>
-          <div class="tab-content bg-white p-3 border-left border-right border-bottom" id="clientRightTabContents">
+          <div class="tab-content bg-white border-left border-right border-bottom p-0" id="clientRightTabContents">
             <!-- Test Card Numbers Tab -->
-            <div class="tab-pane fade show active" id="clientRightTabContentCardNums" role="tabpanel"
+            <div class="tab-pane fade show active p-3" id="clientRightTabContentCardNums" role="tabpanel"
                  aria-labelledby="clientRightTabHeaderCardNums">
               <form class="row g-3">
                 <div class="col-md-12">
-                  <div class="input-group">
-                    <span class="input-group-text">Card Brand</span>
-                    <div class="btn-group-toggle form-control" role="group" aria-label="First group">
-                      <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                      <label class="btn btn-outline-success btn-sm px-1" for="option1">
-                        <img src="img/visa.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-american"
-                             autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-american">
-                        <img src="img/american-express.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-diners" autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-diners">
-                        <img src="img/diners-club.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-discover"
-                             autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-discover">
-                        <img src="img/discover.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-jcb" autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-jcb">
-                        <img src="img/jcb.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-maestro" autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-maestro">
-                        <img src="img/maestro.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-mastercard"
-                             autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-mastercard">
-                        <img src="img/mastercard.svg" width="35px">
-                      </label>
-                      <input type="radio" class="btn-check" name="options" id="card-num-gen-unionpay"
-                             autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm px-1" for="card-num-gen-unionpay">
-                        <img src="img/unionpay.svg" width="35px">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">Connector</span>
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example">
@@ -335,6 +611,54 @@
                       <option value="2">WorldPay</option>
                       <option value="3">Identify/Challenge</option>
                     </select>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="input-group">
+                    <span class="input-group-text">Card Brand</span>
+                    <div class="btn-group-toggle form-control" role="group" aria-label="First group">
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-visa" checked>
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-visa">
+                        <img src="img/visa.svg" alt="visa" width="35px">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-american">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-american">
+                        <img src="img/american-express.svg" width="35px" alt="american express">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-diners">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-diners">
+                        <img src="img/diners-club.svg" width="35px" alt="diners club">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-discover">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-discover">
+                        <img src="img/discover.svg" width="35px" alt="discover">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-jcb">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-jcb">
+                        <img src="img/jcb.svg" width="35px" alt="jcb">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-maestro">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-maestro">
+                        <img src="img/maestro.svg" width="35px" alt="maestro">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-mastercard">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-mastercard">
+                        <img src="img/mastercard.svg" width="35px" alt="mastercard">
+                      </label>
+
+                      <input type="radio" class="btn-check" name="options" id="card-num-gen-unionpay">
+                      <label class="btn btn-outline-primary btn-sm px-1" for="card-num-gen-unionpay">
+                        <img src="img/unionpay.svg" width="35px" alt="china union pay">
+                      </label>
+
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -453,9 +777,20 @@
               </div>
             </div>
             <!-- Events Tab -->
-            <div class="tab-pane fade show" id="clientRightTabContentEvents" role="tabpanel"
-                 aria-labelledby="clientRightTabHeaderEvents">
-              <h4 class="card-title text-primary">Client Events</h4>
+            <div class="tab-pane fade show overflow-auto pl-3 pt-3" id="clientRightTabContentEvents" role="tabpanel"
+                 aria-labelledby="clientRightTabHeaderEvents" style="max-height: 450px;">
+              <table id="clientEventsTable" class="table table-sm table-borderless table-hover">
+                <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Time(s)</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Detail</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
