@@ -54,15 +54,26 @@ function clientEventAdd(event)
   counter++;
   let tbodyRef = document.getElementById('clientEventsTable').getElementsByTagName('tbody')[0];
   let newRow = tbodyRef.insertRow();
-  newRow.insertCell().appendChild(document.createTextNode(counter));
-  newRow.insertCell().appendChild(document.createTextNode(Math.floor(event.timeStamp / 100) / 10))
-  newRow.insertCell().appendChild(document.createTextNode(event.type))
-  let detail = (event.detail === Object(event.detail)) ? JSON.stringify(event.detail) : event.detail;
-  newRow.insertCell().appendChild(document.createTextNode(detail));
+
+  let cellAdder = function (txt, long) {
+    let c = newRow.insertCell();
+    c.appendChild(document.createTextNode(txt));
+    c.classList.add("px-1");
+    c.classList.add("small");
+    if(long)
+    {
+      c.classList.add("text-break");
+    }
+  }
+
+  cellAdder(counter, false);
+  cellAdder(event.type, false);
+  cellAdder((event.detail === Object(event.detail)) ? JSON.stringify(event.detail) : event.detail, true);
+
   document.getElementById("clientRightTabContentEvents").scrollTop = newRow.offsetTop;
 }
 
 function clientEventClear()
 {
-
+  document.getElementById('clientEventsTable').getElementsByTagName('tbody')[0].innerHTML = "";
 }

@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 
-<body data-spy="scroll" data-target="#navbar1" data-offset="60">
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary border-bottom" id="navbar1">
+<body class="pt-5">
+<nav class="navbar fixed-top navbar-dark bg-primary border-bottom" id="navbar1">
   <div class="container-fluid">
     <div class="navbar-brand">
       <a href="//chargehive.com"><img src="img/chargehive-logo-light.png" alt="chargehive"></a>
@@ -30,14 +30,12 @@
         <button type="button" class="btn btn-outline-light"><i class="bi bi-unlock-fill"></i></button>
         <button type="button" class="btn btn-outline-light active"><i class="bi bi-lock"></i></button>
       </div>
-      <div>
-      </div>
     </div>
   </div>
 </nav>
 <main>
   <!-- CLIENT SIDE -->
-  <section class="container pt-5">
+  <section class="container">
     <div class="row">
       <h2 class="text-dark">Client Side</h2>
     </div>
@@ -58,11 +56,6 @@
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="customer-tab-label" data-bs-toggle="tab" href="#customer-tab-content" role="tab"
                  aria-controls="customer-tab-content" aria-selected="false">Customer</a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" id="options-tab" data-bs-toggle="tab" href="#options" role="tab"
-                 aria-controls="options"
-                 aria-selected="false">Options</a>
             </li>
           </ul>
           <div class="tab-content bg-white p-3 border-left border-right border-bottom" id="paymentTabContent">
@@ -194,13 +187,62 @@
             <!-- ORDER TAB -->
             <div class="tab-pane fade pt-2" id="order-items" role="tabpanel" aria-labelledby="order-items-tab">
               <!-- CART -->
-              <div class="row">
+              <div class="row mb-4">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-danger float-right">empty</button>
+                  <h4>Cart </h4>
+                </div>
+                <div class="col-md-12">
+                  <table id="cartTable" class="table table-sm table-hover" style="color: #495057">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Tax</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row my-4">
+                <div class="col-md-12">
+                  <h5>Example Products</h5>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action p-1">
+                      <i class="bi bi-plus"></i>
+                      Tie
+                      <span class="float-right">0.49</span>
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action p-1">
+                      <i class="bi bi-plus"></i>
+                      Red Shirt
+                      <span class="float-right">1.99</span>
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action p-1">
+                      <i class="bi bi-plus"></i>
+                      Blue Shirt
+                      <span class="float-right">14.56</span>
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action p-1">
+                      <i class="bi bi-plus"></i>
+                      Pink Shirt
+                      <span class="float-right">22.39</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <!-- ADD ORDER ITEM -->
               <div class="row g-2 mb-2">
                 <div class="col-lg-12">
-                  <h4>Add Order Item</h4>
+                  <h5>Add Order Item</h5>
                 </div>
                 <div class="col-lg-6">
                   <div class="input-group input-group-sm">
@@ -572,12 +614,6 @@
                 </div>
               </div>
             </div>
-            <!-- OPTIONS TAB -->
-            <div class="tab-pane fade pt-2" id="options" role="tabpanel" aria-labelledby="options-tab">
-              <div class="row">
-                options
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -731,8 +767,7 @@
                   <button class="btn btn-primary btn-sm w-100">Generate</button>
                 </div>
               </form>
-              <div class="row g-3 pt-5">
-                <div class="col-12"><H3 class="h5 text-primary">Numbers (click to copy)</H3></div>
+              <div class="row g-3 pt-3">
                 <div class="d-sm-grid gap-2 d-md-block">
                   <button class="btn btn-outline-secondary p-1" type="button" onclick="copyOnClick(event);"><code>
                     <pre class="mb-0">8000 8260 0005 0007 0000</pre>
@@ -777,20 +812,28 @@
               </div>
             </div>
             <!-- Events Tab -->
-            <div class="tab-pane fade show overflow-auto pl-3 pt-3" id="clientRightTabContentEvents" role="tabpanel"
+            <div class="tab-pane fade show overflow-auto" id="clientRightTabContentEvents" role="tabpanel"
                  aria-labelledby="clientRightTabHeaderEvents" style="max-height: 450px;">
-              <table id="clientEventsTable" class="table table-sm table-borderless table-hover">
-                <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Time(s)</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Detail</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+              <div class="row pt-2 px-2">
+                <div class="col-md-12">
+                  <button class="btn btn-outline-danger btn-sm float-right" onclick="clientEventClear();">clear</button>
+                  <h4>Event Log:</h4>
+                </div>
+              </div>
+              <div class="row px-2">
+                <table id="clientEventsTable" class="table table-sm table-hover table-responsive p-2"
+                       style="color: #495057">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Detail</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
