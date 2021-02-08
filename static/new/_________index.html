@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Controls</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/new/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/new/css/chargehive.css">
+  <link rel="stylesheet" href="/static/new/css/main.css">
+  <link rel="stylesheet" href="/static/new/css/theme.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <script src="/static/new/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="row pt-2">
+    <div class="col-6">
+      <span>
+        <h3>Client Side
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-outline-primary"><i class="bi bi-unlock-fill small"></i></button>
+          <button type="button" class="btn btn-primary"><i class="bi bi-lock small"></i></button>
+        </div>
+          </h3>
+        </span>
+      <ul class="nav nav-tabs" id="paymentTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="payment-tab" data-bs-toggle="tab" href="#payment" role="tab"
+             aria-controls="payment" aria-selected="true">Payment</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="order-items-tab" data-bs-toggle="tab" href="#order-items" role="tab"
+             aria-controls="order-items"
+             aria-selected="false">Order Items</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="options-tab" data-bs-toggle="tab" href="#options" role="tab" aria-controls="options"
+             aria-selected="false">Options</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="paymentTabContent">
+        <!-- PAYMENT TAB -->
+        <div class="tab-pane fade pt-2 show active" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+          <div class="row g-2">
+            <label for="paymentButtons">Payment Buttons:</label>
+            <div class="col-md-12" id="paymentButtons">
+              <!--GOOGLE PAY BUTTON-->
+              <span data-chargehive="googlepayButton" button-type="short" button-color="black"></span>
+              <!--APPLE PAY BUTTON-->
+              <span data-chargehive="applepayButton"></span>
+            </div>
+            <label for="paymentOptions">Payment Options:</label>
+            <div class="col-md-12" id="paymentOptions">
+              <!--CARD PAYMENT OPTION-->
+              <span capability="PLACEMENT_CAPABILITY_CARD_FORM">
+              <input type="radio" class="btn-check" name="method" id="cardOption" autocomplete="off"
+                     value="PLACEMENT_CAPABILITY_CARD_FORM">
+              <label class="btn btn-outline-primary btn-sm px-1" for="cardOption">
+                <span data-chargehive="cardMarks" highlight types="visa mastercard american-express"></span>
+              </label>
+              </span>
+              <!--APPLE PAY OPTION-->
+              <span capability="PLACEMENT_CAPABILITY_APPLE_PAY">
+              <input type="radio" class="btn-check" name="method" id="appleOption" autocomplete="off"
+                     value="PLACEMENT_CAPABILITY_APPLE_PAY">
+              <label class="btn btn-outline-primary btn-sm px-1" for="appleOption">
+                <span data-chargehive="applepayMark"></span>
+              </label>
+              </span>
+              <!--GOOGLE PAY OPTION-->
+              <span capability="PLACEMENT_CAPABILITY_GOOGLE_PAY">
+              <input type="radio" class="btn-check" name="method" id="googleOption" autocomplete="off"
+                     value="PLACEMENT_CAPABILITY_GOOGLE_PAY">
+              <label class="btn btn-outline-primary btn-sm px-1" for="googleOption">
+                <span data-chargehive="googlepayMark"></span>
+              </label>
+              </span>
+              <!--PAYPAL PAYMENT OPTION-->
+              <span capability="PLACEMENT_CAPABILITY_PAYPAL">
+              <input type="radio" class="btn-check" name="method" id="paypalOption" autocomplete="off"
+                     value="PLACEMENT_CAPABILITY_PAYPAL">
+              <label class="btn btn-outline-primary btn-sm px-1" for="paypalOption">
+                <span data-chargehive="paypalMark"></span>
+              </label>
+              </span>
+              <!--DIRECT DEBIT PAYMENT OPTION-->
+              <span capability="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
+              <input type="radio" class="btn-check" name="method" id="ddOption" autocomplete="off"
+                     value="PLACEMENT_CAPABILITY_DIRECTDEBIT_FORM">
+              <label class="btn btn-outline-primary btn-sm px-1" for="ddOption">
+                <span data-chargehive="directDebitMark"></span>
+              </label>
+              </span>
+            </div>
+
+            <!-- PAYMENT AMOUNT PANEL -->
+            <div class="col-md-2">
+              <label for="paymentAmount">Amount</label>
+              <input class="form-control form-control-sm" type="number" placeholder="value" id="paymentAmount"
+                     name="value" required
+                     value="999">
+            </div>
+            <div class="col-md-2">
+              <label for="paymentCurrency">Currency</label>
+              <select class="form-select form-select-sm" aria-label="Default select example" id="paymentCurrency"
+                      name="currency">
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <!-- CARD PAYMENT PANEL -->
+            <div class="col-md-6">
+              <label for="ccNum">Name On Card</label>
+              <span id="ccName" data-chargehive="cardName" class="ch-field-placeholder" style="height: 32px"></span>
+            </div>
+            <div class="col-md-6">
+              <label for="ccNum">Card Number</label>
+              <span id="ccNum" data-chargehive="cardNum" class="ch-field-placeholder" style="height: 32px"></span>
+            </div>
+            <div class="col-md-2">
+              <label for="ccDate">Expiry Date</label>
+              <span id="ccDate" data-chargehive="cardExp" class="ch-field-placeholder"
+                    style="height: 32px"></span>
+            </div>
+            <div class="col-md-2">
+              <label for="ccCvv">CVV</label>
+              <span id="ccCvv" data-chargehive="cardCvv" class="ch-field-placeholder" style="height: 32px"></span>
+            </div>
+            <!-- SCA VERIFY PANEL -->
+            <span data-chargehive="verify" size="full"></span>
+            <!-- Payment Buttons -->
+            <form>
+              <div class="row">
+                <div class="col-2">
+                  <input class="btn btn-outline-primary btn-sm" type="submit" value="Tokenize">
+                </div>
+                <div class="col-2">
+                  <input class="btn btn-outline-primary btn-sm" type="submit" value="Authorize">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- ORDER-ITEMS TAB -->
+        <div class="tab-pane fade pt-2" id="order-items" role="tabpanel" aria-labelledby="order-items-tab">
+
+          <div class="row">
+            <div class="col-md-7">
+              <div class="row">
+                <div class="col-12">
+                  <label for="list-cart">Cart Contents</label>
+                  <div id="list-cart" class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      Item 1
+                      <span class="badge bg-secondary float-end">$14</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      Item 2
+                      <span class="badge bg-secondary float-end">$14</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      Item 3
+                      <span class="badge bg-secondary float-end">$14</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      Item 4
+                      <span class="badge bg-secondary float-end">$14</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="d-grid gap-2 d-md-block">
+                  <button class="btn btn-primary" type="button">Add</button>
+                  <button class="btn btn-primary" type="button">Clear</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <label for="list-dummy">Click to add example:</label>
+              <div id="list-dummy" class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">
+                  Red Thingy
+                  <span class="badge bg-secondary float-end">$1.22</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  Green Thingy
+                  <span class="badge bg-secondary float-end">$35.22</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  White Thingy
+                  <span class="badge bg-secondary float-end">$10</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADD ORDER ITEM -->
+          <div class="row">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Merchant Reference</label>
+                <input type="email" class="form-control form-control-sm" id="inputEmail4">
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- OPTIONS TAB -->
+        <div class="tab-pane fade pt-2" id="options" role="tabpanel" aria-labelledby="options-tab">
+          <div class="col-md-12">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Merchant Reference</label>
+                <input type="email" class="form-control form-control-sm" id="sdfsdf">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="col-12 overflow-auto">
+
+      </div>
+    </div>
+    <!-- Commands -->
+    <div class="col-6">
+      <h4>Server Side</h4>
+      <ul class="nav nav-tabs" id="serverTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="server-create-tab" data-bs-toggle="tab" href="#server-create-tab-content"
+             role="tab" aria-controls="create" aria-selected="true">Create</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="server-capture-tab" data-bs-toggle="tab" href="#server-capture-tab-content" role="tab"
+             aria-controls="profile" aria-selected="false">Capture</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="server-cancel-tab" data-bs-toggle="tab" href="#server-cancel-tab-content" role="tab"
+             aria-controls="profile" aria-selected="false">Cancel</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="server-refund-tab" data-bs-toggle="tab" href="#server-refund-tab-content" role="tab"
+             aria-controls="profile" aria-selected="false">Refund</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="server-ping-tab" data-bs-toggle="tab" href="#server-ping-tab-content" role="tab"
+             aria-controls="profile" aria-selected="false">Ping</a>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="serverTabContent">
+        <!-- CREATE CHARGE -->
+        <div class="tab-pane fade show active pt-2" id="server-create-tab-content" role="tabpanel"
+             aria-labelledby="server-create-tab">
+          <p>Either Tokenize the payment method or Authorize a payment to receive the Payment Method Id in the
+             MethodCreated webhook.</p>
+          <form id="createForm" action="/controls/create" class="row g-3">
+            <div class="col-md-7">
+              <label for="create-payMethId" class="form-label">Payment Method ID</label>
+              <input class="form-control form-control-sm" type="text" placeholder="Pay Method Id" id="create-payMethId"
+                     name="paymentMethodId" required>
+            </div>
+            <div class="col-md-3">
+              <label for="create-amount" class="form-label">Amount</label>
+              <input class="form-control form-control-sm" type="number" placeholder="amount" id="create-amount"
+                     name="units" required>
+            </div>
+            <div class="col-md-2">
+              <label for="create-currency" class="form-label">Currency</label>
+              <select id="create-currency" class="form-select form-select-sm" aria-label="Default select example"
+                      name="currency">
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <input id="create-submit" class="btn btn-outline-primary btn-sm" type="submit" value="Create">
+            </div>
+          </form>
+        </div>
+        <!-- CAPTURE CHARGE -->
+        <div class="tab-pane fade pt-2" id="server-capture-tab-content" role="tabpanel"
+             aria-labelledby="server-capture-tab">
+          <p>Use a ChargeID to capture an amount. Processing is asynchronous. Updates will be sent via webhooks</p>
+          <form id="captureForm" action="/controls/capture" class="row g-3">
+            <div class="col-md-7">
+              <label for="capture-chargeId" class="form-label">Charge ID</label>
+              <input id="capture-chargeId" class="form-control form-control-sm" type="text" placeholder="Charge ID"
+                     name="chargeId" required>
+            </div>
+            <div class="col-md-3">
+              <label for="capture-amount" class="form-label">Amount</label>
+              <input id="capture-amount" class="form-control form-control-sm" type="number" placeholder="amount"
+                     name="units"
+                     required>
+            </div>
+            <div class="col-md-2">
+              <label for="capture-currency" class="form-label">Currency</label>
+              <select id="capture-currency" class="form-select form-select-sm" aria-label="Default select example"
+                      name="currency">
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <input id="capture-submit" class="btn btn-outline-primary btn-sm" type="submit" value="Capture">
+            </div>
+          </form>
+        </div>
+        <!-- CANCEL CHARGE -->
+        <div class="tab-pane fade pt-2" id="server-cancel-tab-content" role="tabpanel"
+             aria-labelledby="server-cancel-tab">
+          <p>Cancel an existing charge from completing additional captures</p>
+          <form id="cancelForm" action="/controls/cancel" class="row g-3">
+            <div class="col-md-7">
+              <label for="cancel-chargeId" class="form-label">Charge ID</label>
+              <input id="cancel-chargeId" class="form-control form-control-sm" type="text" placeholder="Charge ID"
+                     name="chargeId" required>
+            </div>
+            <div class="col-md-5">
+              <label for="capture-currency" class="form-label">Description</label>
+              <input id="cancel-description" class="form-control form-control-sm" type="text" placeholder="Description"
+                     name="description">
+            </div>
+            <div class="col-md-2">
+              <input id="cancel-submit" class="btn btn-outline-primary btn-sm" type="submit" value="Cancel">
+            </div>
+          </form>
+        </div>
+        <!-- REFUND CHARGE -->
+        <div class="tab-pane fade pt-2" id="server-refund-tab-content" role="tabpanel"
+             aria-labelledby="server-refund-tab">
+          <p>Refund a specific amount against a charge</p>
+          <form id="refundForm" action="/controls/refund" class="row g-3">
+            <div class="col-md-7">
+              <label for="refund-chargeId">Charge ID</label>
+              <input id="refund-chargeId" class="form-control form-control-sm" type="text" placeholder="Charge ID"
+                     name="chargeId" required>
+            </div>
+            <div class="col-md-3">
+              <label for="refund-amount">Amount</label>
+              <input id="refund-amount" class="form-control form-control-sm" type="number" placeholder="amount"
+                     name="units" required>
+            </div>
+            <div class="col-md-2">
+              <label for="refund-currency">Currency</label>
+              <select id="refund-currency" class="form-select form-select-sm" aria-label="Default select example"
+                      name="currency">
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <input id="refund-submit" class="btn btn-outline-primary btn-sm" type="submit" value="Refund">
+            </div>
+          </form>
+        </div>
+        <!-- PING -->
+        <div class="tab-pane fade pt-2" id="server-ping-tab-content" role="tabpanel" aria-labelledby="server-ping-tab">
+          <p>Send a message to the api server to test connectivity</p>
+          <form id="pingForm" action="/controls/ping" class="row g-3">
+            <div class="mb-3">
+              <label for="ping-value" class="form-label">Ping value</label>
+              <input id="ping-value" class="form-control form-control-sm" type="text" placeholder="ping value"
+                     aria-label=".form-control-sm example" required>
+            </div>
+            <div class="mb-2">
+              <input id="ping-submit" class="btn btn-outline-primary btn-sm" type="submit" value="Ping">
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr>
+      <div class="row" style="margin-top: 20px;">
+        <h6>Result:</h6>
+        <pre><code id="resultOutput"></code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/bootstrap.min.js"></script>
+<!-- Chargehive JS -->
+<script id="chScriptEle" src="https://cdn.paymentauth.me:8823/merchant/latest/v1/js/chargehive.min.js"></script>
+<script>
+  ChargeHive.initialize(
+    'dGVzdC1wcm9qZWN0OjQ3OWViYTdiLTk5OTMtNDY0My05ZjE0LTZiM2MyOWVjZDQ4MzpDOEFGSlZKWVVRSTheYmJiOTdiZmY4NWQ0NDAwNDk2N2I=', // your placement token
+    'test-project', // your project id
+    {"currency": "USD", "country": "GB"} //additional options
+  );
+</script>
+<!-- Chargehive events -->
+<script src="js/index.js"></script>
+<!-- Client Side of the screen -->
+<script src="js/clientSide.js"></script>
+<!-- Server Side of the screen-->
+<script src="js/serverSide.js"></script>
+</body>
+</html>

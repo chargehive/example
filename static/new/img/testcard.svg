@@ -1,0 +1,11 @@
+<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 21">
+  <style/>
+  <g stroke="#333" id="svg_3" stroke-miterlimit="10" stroke-linecap="round">
+    <path id="svg_1" fill="#e0e0e0"
+          d="M3.5.6h24.3c1 0 2.1 1 2.1 2.1v15.7c0 1-1 2.1-2.1 2.1H3.5c-1 0-2.1-1-2.1-2V2.6c0-1 1-2.1 2.1-2.1z"/>
+    <path id="svg_2" d="M1.4 4.5h28.5v4.6H1.4V4.5z" fill="#7f03fe"/>
+  </g>
+  <text stroke="#333" text-anchor="middle" font-family="Monospace" font-size="10" id="svg_5" y="18.4" x="16.2"
+        stroke-linecap="round" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0">TEST
+  </text>
+</svg>

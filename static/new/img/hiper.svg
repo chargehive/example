@@ -1,0 +1,20 @@
+<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 21">
+  <style>.st0{fill:#fff}</style>
+  <g stroke="null" id="svg_1">
+    <path id="svg_2" class="st0" d="M.2 0h30.7v21H.2z"/>
+    <g id="svg_3">
+      <path id="svg_4" d="M6 4.6l13.9-3.3c2-.5 4 .7 4.6 2.8L27.8 18c.2 1 0 2.1-.6 3H6L3.2 9c-.5-2 .7-4 2.8-4.5z"
+            fill-rule="evenodd" clip-rule="evenodd" fill="#ff5300"/>
+      <path id="svg_5" class="st0" d="M6 10.3v6h1.3v-2.6h2.2v2.5H11v-6H9.5v2.4H7.3v-2.3H5.9z"/>
+      <path id="svg_6"
+            d="M22.5 14.5V14c0-1.1-.5-2.2-2-2.2-1.4 0-2 1.2-2 2.3 0 1.4.8 2.2 2.2 2.2.6 0 1.1 0 1.6-.3l-.2-.9-1.2.2c-.6 0-1.2-.3-1.2-.8h2.8zm-2.8-1c0-.3.2-.8.8-.8.6 0 .8.5.8.9h-1.6z"
+            class="st0"/>
+      <path id="svg_7" d="M23 16.2h1.3V14v-.3c.1-.4.4-.7 1-.7h.3v-1.2h-.3c-.4 0-1 .3-1.2.9v-.8h-1.2v4.4z" class="st0"/>
+      <path id="svg_8" d="M12.2 10a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4z" fill-rule="evenodd" clip-rule="evenodd"
+            fill="#fff500"/>
+      <path id="svg_9"
+            d="M15 15.2h.7c.7 0 1-.4 1-.9 0-.4 0-1.4-.9-1.4-1 0-.8 1.2-.8 1.9v.4zM11.6 12H13v2.4c0 .5.3 1 .8 1v-3.4h1.1l.1.6c.5-1 2.3-.8 2.8.1.6 1 .8 3.7-2 3.7h-.6v1.6h-1.4v-1.6c-1.5 0-2.2-1-2.2-2V12z"
+            fill-rule="evenodd" clip-rule="evenodd" fill="#fff"/>
+    </g>
+  </g>
+</svg>

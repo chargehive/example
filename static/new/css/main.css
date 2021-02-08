@@ -1,0 +1,11 @@
+body{
+  background-color: #062c7c;
+}
+.tab-content>.tab-pane{
+  display:block;
+  visibility:hidden;
+}
+
+.tab-content>.active{
+  visibility:visible;
+}

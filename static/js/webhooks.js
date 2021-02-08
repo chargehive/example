@@ -19,4 +19,4 @@ setInterval(() => {
         }
       }
     }).catch(err => console.error(err));
-}, 2000);
+}, 20000);
