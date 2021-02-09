@@ -55,22 +55,26 @@ function clientEventAdd(event)
   let tbodyRef = document.getElementById('clientEventsTable').getElementsByTagName('tbody')[0];
   let newRow = tbodyRef.insertRow();
 
-  let cellAdder = function (txt, long) {
+  let cellAdder = function (txt, code) {
     let c = newRow.insertCell();
-    c.appendChild(document.createTextNode(txt));
-    c.classList.add("px-1");
-    c.classList.add("small");
-    if(long)
+    if(code)
     {
+      c.innerHTML = "<pre><code>" + txt + "</code></pre>";
       c.classList.add("text-break");
     }
+    else
+    {
+      c.appendChild(document.createTextNode(txt));
+    }
+    c.classList.add("px-1");
+    c.classList.add("small");
   }
 
   cellAdder(counter, false);
   cellAdder(event.type, false);
   cellAdder((event.detail === Object(event.detail)) ? JSON.stringify(event.detail) : event.detail, true);
 
-  document.getElementById("clientRightTabContentEvents").scrollTop = newRow.offsetTop;
+  document.getElementById("clientRightTabContents").scrollTop = newRow.offsetTop;
 }
 
 function clientEventClear()

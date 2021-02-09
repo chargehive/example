@@ -19,14 +19,14 @@
   <div class="container-fluid">
     <div class="navbar-brand">
       <a href="//chargehive.com"><img src="img/chargehive-logo-light.png" alt="chargehive"></a>
+      <span class="badge small badge-info d-inline-block d-sm-none">XS</span>
+      <span class="badge small badge-info d-none d-sm-inline-block d-md-none">SM</span>
+      <span class="badge small badge-info d-none d-md-inline-block d-lg-none">MD</span>
+      <span class="badge small badge-info d-none d-lg-inline-block d-xl-none">LG</span>
+      <span class="badge small badge-info d-none d-xl-inline-block">XL</span>
     </div>
     <div class="navbar-nav">
-      <div class="input-group">
-        <span class="input-group-text text-primary d-inline-block d-sm-none">XS</span>
-        <span class="input-group-text text-primary d-none d-sm-inline-block d-md-none">SM</span>
-        <span class="input-group-text text-primary d-none d-md-inline-block d-lg-none">MD</span>
-        <span class="input-group-text text-primary d-none d-lg-inline-block d-xl-none">LG</span>
-        <span class="input-group-text text-primary d-none d-xl-inline-block">XL</span>
+      <div class="input-group input-group-sm">
         <button type="button" class="btn btn-outline-light"><i class="bi bi-unlock-fill"></i></button>
         <button type="button" class="btn btn-outline-light active"><i class="bi bi-lock"></i></button>
       </div>
@@ -41,7 +41,63 @@
     </div>
     <div class="row g-5">
       <!-- left side -->
-      <div class="col-md-6">
+      <div class="col-md-6 px-6">
+
+        <div class="row mb-2">
+          <div class="card px-0">
+            <div class="card-header pt-1 pb-0">
+              <h4 class="mb-0" style="color: #495057">Cart</h4>
+            </div>
+            <div class="card-body px-3 py-1">
+              <div class="row">
+                <div class="col-md-12">
+                  <table id="cartTable" class="table table-sm table-hover" style="color: #495057">
+                    <thead class="table-borderless">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Tax</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Red Tie</td>
+                      <td>1.20</td>
+                      <td>0.40</td>
+                      <td>1.60</td>
+                    </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer px-3 py-0">
+              <div class="row py-2">
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-sm btn-outline-danger btn-block">empty cart</button>
+                </div>
+                <div class="col-md-9">
+                  <div class="input-group input-group-sm col-md-6">
+                    <span class="input-group-text" id="paymentAmountLabel">Total</span>
+                    <input id="paymentAmount" class="form-control" type="number" value="10.99" name="units"
+                           aria-describedby="paymentAmountLabel" step="0.01" required>
+                    <select class="form-select form-select-sm input-group-text" aria-label="Default select example"
+                            id="paymentCurrency" name="currency">
+                      <option value="USD">USD</option>
+                      <option value="GBP">GBP</option>
+                      <option value="EUR">EUR</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <ul class="nav nav-tabs" id="paymentTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -75,24 +131,8 @@
             <div class="tab-pane fade show active" id="payment" role="tabpanel" aria-labelledby="payment-tab">
               <!-- SCA VERIFY PANEL -->
               <span data-chargehive="verify" size="full"></span>
-              <!-- PAYMENT AMOUNT/CURRENCY ROW -->
-              <div class="row py-2" id="paymentAmountCurrencyRow">
-                <div class="col-md-12">
-                  <div class="input-group input-group col-md-2">
-                    <span class="input-group-text" id="paymentAmountLabel">Total</span>
-                    <input id="paymentAmount" class="form-control" type="number" value="10.99" name="units"
-                           aria-describedby="paymentAmountLabel" step="0.01" required>
-                    <select class="form-select form-select-sm input-group-text" aria-label="Default select example"
-                            id="paymentCurrency" name="currency">
-                      <option value="USD">USD</option>
-                      <option value="GBP">GBP</option>
-                      <option value="EUR">EUR</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
               <!-- INSTANT PAY BUTTONS -->
-              <div class="row py-2" id="instantPayButtonRow">
+              <div class="row" id="instantPayButtonRow">
                 <label for="instantPayButtonRow">Instant Pay Buttons</label>
                 <!--GOOGLE PAY BUTTON-->
                 <div class="col-md-4">
@@ -185,56 +225,34 @@
               </form>
             </div>
             <!-- ORDER TAB -->
-            <div class="tab-pane fade pt-2" id="order-items" role="tabpanel" aria-labelledby="order-items-tab">
-              <!-- CART -->
+            <div class="tab-pane fade" id="order-items" role="tabpanel" aria-labelledby="order-items-tab">
+              <!-- DEMO ITEMS -->
               <div class="row mb-4">
                 <div class="col-md-12">
-                  <button type="button" class="btn btn-sm btn-outline-danger float-right">empty</button>
-                  <h4>Cart </h4>
+                  <h5>Add Demo Items</h5>
                 </div>
-                <div class="col-md-12">
-                  <table id="cartTable" class="table table-sm table-hover" style="color: #495057">
-                    <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Tax</th>
-                      <th scope="col">Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="row my-4">
-                <div class="col-md-12">
-                  <h5>Example Products</h5>
-                </div>
-
                 <div class="col-md-12">
                   <div class="list-group">
-                    <button type="button" class="list-group-item list-group-item-action p-1">
+                    <a href="#" class="list-group-item list-group-item-action p-1">
                       <i class="bi bi-plus"></i>
                       Tie
                       <span class="float-right">0.49</span>
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action p-1">
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action p-1">
                       <i class="bi bi-plus"></i>
                       Red Shirt
                       <span class="float-right">1.99</span>
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action p-1">
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action p-1">
                       <i class="bi bi-plus"></i>
                       Blue Shirt
                       <span class="float-right">14.56</span>
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action p-1">
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action p-1">
                       <i class="bi bi-plus"></i>
                       Pink Shirt
                       <span class="float-right">22.39</span>
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -242,7 +260,7 @@
               <!-- ADD ORDER ITEM -->
               <div class="row g-2 mb-2">
                 <div class="col-lg-12">
-                  <h5>Add Order Item</h5>
+                  <h5>Add Custom Items</h5>
                 </div>
                 <div class="col-lg-6">
                   <div class="input-group input-group-sm">
@@ -421,54 +439,65 @@
               <div class="row g-2 mb-4">
                 <div class="col-lg-3">
                   <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="customer-title-label">Title</span>
-                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="customer-title-label">
+                    <span class="input-group-text" id="custom-language-label"><i class="bi bi-globe"></i></span>
+                    <select class="form-select form-select-sm">
+                      <option value="en">EN</option>
+                      <option value="fr">FR</option>
+                      <option value="de">DE</option>
+                    </select>
                   </div>
                 </div>
 
-                <div class="col-lg-6">
-                  <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="custom-firstname-label">Firstname</span>
-                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-firstname-label">
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="custom-lastname-label">Lastname</span>
-                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-lastname-label">
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="custom-fullname-label">Full Name</span>
-                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-fullname-label">
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text" id="custom-email-label">Email</span>
                     <input type="email" class="form-control" aria-label="FAO" aria-describedby="billing-email-label">
                   </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text" id="custom-phone-label">Phone</span>
                     <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-phone-label">
                   </div>
                 </div>
 
-                <div class="col-lg-6">
+
+                <div class="col-lg-3">
                   <div class="input-group input-group-sm">
-                    <span class="input-group-text" id="custom-language-label">Language</span>
-                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-language-label">
+                    <span class="input-group-text" id="customer-title-label">Title</span>
+                    <select class="form-select form-select-sm">
+                      <option value="mr">Mr</option>
+                      <option value="mrs">Mrs</option>
+                      <option value="ms">Ms</option>
+                      <option value="sir">Sir</option>
+                    </select>
+                  </div>
+                </div>
+                <br>
+                <div class="col-lg-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-firstname-label">Firstname</span>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-lg-5">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-lastname-label">Lastname</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-lastname-label">
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text" id="custom-fullname-label">Full Name</span>
+                    <input type="text" class="form-control" aria-label="FAO" aria-describedby="billing-fullname-label">
                   </div>
                 </div>
 
                 <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-info">get</button>
                   <button type="button" class="btn btn-sm btn-outline-success">apply</button>
                   <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
                 </div>
@@ -538,6 +567,7 @@
                   </div>
                 </div>
                 <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-info">get</button>
                   <button type="button" class="btn btn-sm btn-outline-success">apply</button>
                   <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
                   <button type="button" class="btn btn-sm btn-outline-info">copy to shipping</button>
@@ -608,6 +638,7 @@
                   </div>
                 </div>
                 <div class="col-md-12">
+                  <button type="button" class="btn btn-sm btn-outline-info">get</button>
                   <button type="button" class="btn btn-sm btn-outline-success">apply</button>
                   <button type="button" class="btn btn-sm btn-outline-danger">clear</button>
                   <button type="button" class="btn btn-sm btn-outline-info">copy to billing</button>
@@ -633,19 +664,19 @@
                  aria-selected="false">Events</a>
             </li>
           </ul>
-          <div class="tab-content bg-white border-left border-right border-bottom p-0" id="clientRightTabContents">
+          <div class="tab-content bg-white border-left border-right border-bottom overflow-auto"
+               id="clientRightTabContents">
             <!-- Test Card Numbers Tab -->
-            <div class="tab-pane fade show active p-3" id="clientRightTabContentCardNums" role="tabpanel"
+            <div class="tab-pane fade show active" id="clientRightTabContentCardNums" role="tabpanel"
                  aria-labelledby="clientRightTabHeaderCardNums">
-              <form class="row g-3">
+              <form class="row g-3 pt-3">
                 <div class="col-md-12">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">Connector</span>
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                      <option selected>ChargeHive</option>
-                      <option value="1">Paysafe</option>
-                      <option value="2">WorldPay</option>
-                      <option value="3">Identify/Challenge</option>
+                      <option value="chargehive" selected>ChargeHive</option>
+                      <option value="paysafe">Paysafe</option>
+                      <option value="worldpay">WorldPay</option>
                     </select>
                   </div>
                 </div>
@@ -701,10 +732,10 @@
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">SCA</span>
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                      <option selected>None</option>
-                      <option value="1">Identify</option>
-                      <option value="2">Challenge</option>
-                      <option value="3">Identify/Challenge</option>
+                      <option value="none">None</option>
+                      <option value="identify">Identify</option>
+                      <option value="challenge">Challenge</option>
+                      <option value="both">Identify/Challenge</option>
                     </select>
                   </div>
                 </div>
@@ -812,18 +843,21 @@
               </div>
             </div>
             <!-- Events Tab -->
-            <div class="tab-pane fade show overflow-auto" id="clientRightTabContentEvents" role="tabpanel"
-                 aria-labelledby="clientRightTabHeaderEvents" style="max-height: 450px;">
-              <div class="row pt-2 px-2">
-                <div class="col-md-12">
-                  <button class="btn btn-outline-danger btn-sm float-right" onclick="clientEventClear();">clear</button>
-                  <h4>Event Log:</h4>
+            <div class="tab-pane" id="clientRightTabContentEvents" role="tabpanel"
+                 aria-labelledby="clientRightTabHeaderEvents" style="max-height: 450px;" p-0>
+              <div class="row">
+                <div class="card-header p-1">
+                  <h5 class="mb-0" style="color: #495057">
+                    <span>Log:</span>
+                    <button class="btn btn-outline-danger btn-sm float-right" onclick="clientEventClear();">clear
+                    </button>
+                  </h5>
                 </div>
               </div>
-              <div class="row px-2">
-                <table id="clientEventsTable" class="table table-sm table-hover table-responsive p-2"
+              <div class="row">
+                <table id="clientEventsTable" class="table table-sm table-hover"
                        style="color: #495057">
-                  <thead>
+                  <thead class="table-borderless">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Type</th>
@@ -847,7 +881,7 @@
       <h2 class="text-dark">Server Side</h2>
     </div>
     <div class="row">
-      <div class="col-6 h-100">
+      <div class="col-md-6 h-100">
         <div class="row">
           <ul class="nav nav-tabs" id="serverTab" role="tablist">
             <li class="nav-item" role="presentation">
